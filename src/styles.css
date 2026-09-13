@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+:root { --ink: #12264b; --muted: #64758e; --paper: #ffffff; --panel: #f6f9fd; --line: #dbe8f7; --accent: #1274e8; --signal: #55b777; --display: Arial, sans-serif; --mono: 'Courier New', monospace; }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body { background: var(--paper); color: var(--ink); font-family: var(--display); }
+a { text-decoration: none; }
+button, input { font: inherit; }

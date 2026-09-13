@@ -1,0 +1,1 @@
+export interface PerformanceSummary { requestCount: number; successRate: number; averageDurationMs: number; period: string; }

@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="FootLook documentation for ASP.NET Core API observability.">
+<style>
+  :root { color-scheme: light; font-family: "Segoe UI", sans-serif; color: #17253d; background: #fff; }
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  body::before { background: #061b3c; color: #fff; content: "FootLook  /  Documentation"; display: block; font-size: 15px; font-weight: 600; padding: 18px max(24px, calc((100vw - 1120px) / 2)); }
+  main { line-height: 1.6; margin: auto; max-width: 900px; padding: 48px 28px 80px; }
+  h1, h2, h3 { color: #102a52; line-height: 1.2; }
+  h1 { border-bottom: 1px solid #d8e2ee; font-size: 36px; margin: 0 0 24px; padding-bottom: 24px; }
+  h2 { border-top: 1px solid #e3ebf4; font-size: 26px; margin: 48px 0 16px; padding-top: 32px; }
+  h3 { font-size: 19px; margin-top: 30px; }
+  p, li { font-size: 16px; }
+  a { color: #0869c7; }
+  code { background: #eef4f9; border-radius: 3px; color: #153a65; font: 0.9em Consolas, monospace; padding: 2px 4px; }
+  pre { background: #071d3c; border-radius: 6px; color: #d9e8f7; overflow-x: auto; padding: 18px; }
+  pre code { background: transparent; color: inherit; padding: 0; }
+  blockquote { background: #eef7ff; border-left: 4px solid #1474e8; margin: 24px 0; padding: 4px 18px; }
+  table { border-collapse: collapse; display: block; margin: 20px 0; overflow-x: auto; width: 100%; }
+  th { background: #edf5ff; color: #102a52; text-align: left; }
+  th, td { border: 1px solid #d8e2ee; padding: 10px 12px; vertical-align: top; }
+  .mermaid { background: #f8fbff; border: 1px solid #d8e2ee; border-radius: 6px; margin: 24px 0; overflow-x: auto; padding: 20px; text-align: center; }
+  @media (max-width: 640px) { main { padding: 32px 18px 56px; } h1 { font-size: 30px; } h2 { font-size: 23px; } p, li { font-size: 15px; } }
+</style>
+</head>
+<body>
+<main>
+<h1>FootLook documentation</h1>
+<p>FootLook is zero-interaction observability for ASP.NET Core APIs. It captures eligible HTTP requests and responses through middleware, then makes the resulting captures available for local inspection, operational metrics, and live updates.</p>
+<p>Use FootLook when you need to investigate what an API is receiving and returning without adding logging calls to controllers, endpoints, or business services.</p>
+<h2>In this documentation</h2>
+<ul>
+<li><a href="#what-is-footlook">What is FootLook?</a></li>
+<li><a href="#quickstart">Quickstart</a></li>
+<li><a href="#configure-capture">Configure capture</a></li>
+<li><a href="#view-live-captures">View live captures</a></li>
+<li><a href="#use-the-management-api">Use the management API</a></li>
+<li><a href="#protect-sensitive-data">Protect sensitive data</a></li>
+<li><a href="#understand-storage-and-reliability">Understand storage and reliability</a></li>
+<li><a href="#prepare-for-production">Prepare for production</a></li>
+<li><a href="#troubleshoot-footlook">Troubleshoot FootLook</a></li>
+</ul>
+<h2 id="what-is-footlook">What is FootLook?</h2>
+<p>FootLook observes the ASP.NET Core request pipeline. For each eligible request, it records method, path, status code, elapsed duration, timestamp, correlation information, and optional request and response bodies. Capture processing happens in a background worker so the application can return its normal response without waiting for persistence.</p>
+<p>FootLook includes the following capabilities:</p>
+<ul>
+<li>Capture request and response details without changing application endpoints.</li>
+<li>Limit capture by path, method, content type, body size, and sampling rate.</li>
+<li>Mask sensitive headers, query parameters, and body values.</li>
+<li>Propagate correlation and W3C trace context when available.</li>
+<li>Store captures in memory and append them to a JSONL file without requiring a database.</li>
+<li>Broadcast persisted captures to connected SignalR clients.</li>
+<li>Query capture history, statistics, privacy state, reliability state, and runtime status through management endpoints.</li>
+</ul>
+<h3>How FootLook works</h3>
+<pre class="mermaid">flowchart LR
+  Client[API client] --> Middleware[FootLook middleware]
+  Middleware --> App[Your ASP.NET Core endpoint]
+  App --> Middleware
+  Middleware --> Queue[Bounded capture queue]
+  Queue --> Worker[Background worker]
+  Worker --> Store[In-memory and JSONL storage]
+  Worker --> Live[SignalR live updates]
+  Store --> Dashboard[Dashboard and management API]
+</pre>
+<blockquote>
+<p>
+FootLook&#39;s management endpoints do not have an authorization policy in the current implementation. Protect or restrict them before exposing an application outside a trusted environment.</p>
+</blockquote>
+<h2 id="quickstart">Quickstart</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>.NET 8 SDK.</li>
+<li>An ASP.NET Core application using the minimal hosting model.</li>
+<li>Access to the <code>FootLook.Core</code> package or a project reference to the FootLook source project.</li>
+</ul>
+<h3>Install the package</h3>
+<p>Add FootLook to the API project:</p>
+<pre><code class="language-bash">dotnet add package FootLook.Core
+</code></pre>
+<p>For a local solution, reference <code>FootLook.Core.csproj</code> from your web project instead.</p>
+<h3>Add FootLook to the application</h3>
+<p>Add the required namespaces and register FootLook before building the application. Place <code>UseFootLook()</code> early in the middleware pipeline so it sees the full request lifecycle.</p>
+<pre><code class="language-csharp">using FootLook.Core.Extensions;
+using FootLook.Core.Hubs;
+using FootLook.Core.Options;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddFootLook(options =&gt;
+{
+    builder.Configuration.GetSection(&quot;FootLook&quot;).Bind(options);
+});
+
+builder.Services.AddSignalR();
+
+var app = builder.Build();
+
+app.UseFootLook();
+
+var footlookOptions = app.Services.GetRequiredService&lt;FootLookOptions&gt;();
+app.MapFootLookEndpoints(footlookOptions);
+
+app.MapHub&lt;CaptureHub&gt;(&quot;/footlook/live&quot;);
+
+app.Run();
+</code></pre>
+<p>Send a request to any eligible application endpoint. FootLook queues the observation, persists it asynchronously, and exposes it through the configured endpoints and live hub.</p>
+<h2 id="configure-capture">Configure capture</h2>
+<p>Configure FootLook under the <code>FootLook</code> section in <code>appsettings.json</code>.</p>
+<pre><code class="language-json">{
+  &quot;FootLook&quot;: {
+    &quot;Enabled&quot;: true,
+    &quot;SamplingRate&quot;: 1.0,
+    &quot;CaptureRequestBody&quot;: true,
+    &quot;CaptureResponseBody&quot;: true,
+    &quot;MaxBodyLength&quot;: 1048576,
+    &quot;EndpointBasePath&quot;: &quot;/footlook&quot;,
+    &quot;QueCapacity&quot;: 10000,
+    &quot;ServiceName&quot;: &quot;OrdersApi&quot;
+  }
+}
+</code></pre>
+<h3>Common options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Enabled</code></td>
+<td>Enables or disables new captures.</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>SamplingRate</code></td>
+<td>Fraction of eligible requests to capture. Use a value from <code>0.0</code> through <code>1.0</code>.</td>
+<td><code>0.25</code></td>
+</tr>
+<tr>
+<td><code>CaptureRequestBody</code></td>
+<td>Stores eligible request bodies.</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>CaptureResponseBody</code></td>
+<td>Stores eligible response bodies.</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>MaxBodyLength</code></td>
+<td>Maximum length retained for each captured body.</td>
+<td><code>1048576</code></td>
+</tr>
+<tr>
+<td><code>EndpointBasePath</code></td>
+<td>Route prefix for the management API.</td>
+<td><code>/footlook</code></td>
+</tr>
+<tr>
+<td><code>QueCapacity</code></td>
+<td>Capacity of FootLook&#39;s bounded asynchronous queue.</td>
+<td><code>10000</code></td>
+</tr>
+<tr>
+<td><code>ServiceName</code></td>
+<td>Logical service name included with captures.</td>
+<td><code>OrdersApi</code></td>
+</tr>
+<tr>
+<td><code>EnvironmentName</code></td>
+<td>Environment label included with captures.</td>
+<td><code>Production</code></td>
+</tr>
+</tbody></table>
+<h3>Exclude noise</h3>
+<p>Exclude endpoints that should not produce captures, especially the dashboard, management routes, health probes, Swagger, and static files.</p>
+<pre><code class="language-csharp">builder.Services.AddFootLook(options =&gt;
+{
+    builder.Configuration.GetSection(&quot;FootLook&quot;).Bind(options);
+
+    options.IgnoredPaths.Add(&quot;/footlook&quot;);
+    options.IgnoredPaths.Add(&quot;/footlook.html&quot;);
+    options.IgnoredPaths.Add(&quot;/swagger&quot;);
+    options.IgnoredPaths.Add(&quot;/favicon.ico&quot;);
+});
+</code></pre>
+<h2 id="view-live-captures">View live captures</h2>
+<p>FootLook broadcasts each successfully persisted capture over the SignalR hub at <code>/footlook/live</code>. Clients receive the <code>captureReceived</code> event.</p>
+<pre><code class="language-javascript">const connection = new signalR.HubConnectionBuilder()
+  .withUrl(&#39;/footlook/live&#39;)
+  .withAutomaticReconnect()
+  .build();
+
+connection.on(&#39;captureReceived&#39;, (capture) =&gt; {
+  console.log(`${capture.method} ${capture.path} ${capture.statusCode} ${capture.durationMs}ms`);
+});
+
+await connection.start();
+</code></pre>
+<p>For the included runtime dashboard, browse to <code>/footlook.html</code> after the host starts.</p>
+<h2 id="use-the-management-api">Use the management API</h2>
+<p><code>MapFootLookEndpoints</code> maps the management API beneath <code>EndpointBasePath</code>, which defaults to <code>/footlook</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Route</th>
+<th>Use it to</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>GET</code></td>
+<td><code>/footlook/health</code></td>
+<td>Check the service, configured sinks, and capture state.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/footlook/captures</code></td>
+<td>List filtered and paged captures.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/footlook/captures/{id}</code></td>
+<td>Retrieve a capture by ID.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/footlook/captures/stats</code></td>
+<td>Retrieve aggregate request statistics and top endpoints.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/footlook/captures/recent</code></td>
+<td>Retrieve recent captures.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/footlook/captures/history</code></td>
+<td>Retrieve capture history from the in-memory store.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td><code>/footlook/captures</code></td>
+<td>Clear retained in-memory captures.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/footlook/captures/pause</code></td>
+<td>Pause new capture activity.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>/footlook/captures/resume</code></td>
+<td>Resume capture activity.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/footlook/privacy/status</code></td>
+<td>Inspect active privacy settings.</td>
+</tr>
+<tr>
+<td><code>GET</code></td>
+<td><code>/footlook/reliability/status</code></td>
+<td>Inspect queue, retry, and processing reliability metrics.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>
+The default management API reads the in-memory capture store. The JSONL sink persists captures to disk, but clearing captures removes only the in-memory records.</p>
+</blockquote>
+<h2 id="protect-sensitive-data">Protect sensitive data</h2>
+<p>FootLook is intended to provide visibility without casually exposing sensitive API data. Review the following controls before enabling body capture in production:</p>
+<ul>
+<li>Mask sensitive request headers and query parameters.</li>
+<li>Mask sensitive JSON and form fields.</li>
+<li>Configure a body-size limit with <code>MaxBodyLength</code>.</li>
+<li>Disable request or response body capture where it is unnecessary.</li>
+<li>Exclude authentication, payment, administrative, and health-check paths through <code>IgnoredPaths</code>.</li>
+<li>Configure client IP and user-agent hashing with a protected <code>PrivacyHashSalt</code> where required.</li>
+</ul>
+<p>Do not place secrets, connection strings, tokens, or privacy salts in source-controlled configuration files.</p>
+<h2 id="understand-storage-and-reliability">Understand storage and reliability</h2>
+<p>FootLook uses a bounded queue between the request pipeline and persistence. The background worker handles deduplication, retries failed writes with exponential backoff, writes to configured sinks, publishes in-process events, and sends the live SignalR notification.</p>
+<p>By default, the active capture path uses:</p>
+<ul>
+<li><strong>In-memory storage</strong> for fast capture inspection, history, and statistics.</li>
+<li><strong>JSONL file storage</strong> for append-only local persistence.</li>
+</ul>
+<p>No database is required. Under sustained queue pressure, the queue is configured to drop the oldest captured item. Choose a queue capacity and sampling rate appropriate for the traffic level and acceptable capture-loss risk.</p>
+<h2 id="prepare-for-production">Prepare for production</h2>
+<p>Before deploying FootLook to a production environment:</p>
+<ol>
+<li>Add authorization to all management endpoints and the SignalR hub.</li>
+<li>Review body capture, redaction, client metadata hashing, and retention settings with your security requirements.</li>
+<li>Exclude dashboards, probes, static paths, and other known noise sources.</li>
+<li>Set <code>ServiceName</code> and <code>EnvironmentName</code> to values that make captures identifiable across deployments.</li>
+<li>Monitor <code>/footlook/reliability/status</code> and <code>/footlook/operations/health</code> for queue pressure, retries, and failed persistence.</li>
+<li>Validate storage capacity, JSONL rotation, and retention behavior for the host filesystem.</li>
+</ol>
+<h2 id="troubleshoot-footlook">Troubleshoot FootLook</h2>
+<h3>Requests do not appear</h3>
+<p>Check that <code>Enabled</code> is <code>true</code>, <code>UseFootLook()</code> is registered, and the requested path is not ignored. Also confirm that the request matches any configured method, content, and sampling rules.</p>
+<h3>The dashboard does not update live</h3>
+<p>Confirm that SignalR is registered with <code>AddSignalR()</code>, that <code>CaptureHub</code> is mapped at <code>/footlook/live</code>, and that the client listens for <code>captureReceived</code>. A capture is broadcast only after it has been persisted successfully.</p>
+<h3>Captures are missing during heavy traffic</h3>
+<p>Inspect <code>/footlook/reliability/status</code>. The queue is bounded and can discard older captures under pressure. Increase <code>QueCapacity</code>, reduce <code>SamplingRate</code>, or reduce captured body volume based on your throughput requirements.</p>
+<h3>The management routes are not available</h3>
+<p>Confirm that <code>MapFootLookEndpoints(footlookOptions)</code> runs after building the application and that the route uses the configured <code>EndpointBasePath</code>.</p>
+<h2>Next steps</h2>
+<ul>
+<li>Use <a href="/src/app/features/marketing/home/home/home.html">the FootLook product overview</a> to understand the companion website project.</li>
+<li>Review the source implementation for advanced operational, privacy, and outcome endpoints.</li>
+</ul>
+</main>
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+  mermaid.initialize({ startOnLoad: true, theme: 'base', themeVariables: { primaryColor: '#edf6ff', primaryBorderColor: '#1474e8', primaryTextColor: '#102a52', lineColor: '#1474e8', tertiaryColor: '#f8fbff' } });
+</script>
+</body>
+</html>

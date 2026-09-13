@@ -1,0 +1,1 @@
+export interface Endpoint { path: string; method: string; requestCount: number; successRate: number; averageDurationMs: number; }

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="FootLook documentation for ASP.NET Core API observability.">
+  <title>FootLook documentation</title>
+  <style>
+    :root { font-family: "Segoe UI", sans-serif; color: #17253d; background: #fff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    header { background: #061b3c; color: #fff; font-size: 15px; font-weight: 600; padding: 18px max(24px, calc((100vw - 980px) / 2)); }
+    main { line-height: 1.6; margin: auto; max-width: 900px; padding: 48px 28px 80px; }
+    h1, h2, h3 { color: #102a52; line-height: 1.2; }
+    h1 { border-bottom: 1px solid #d8e2ee; font-size: 36px; margin: 0 0 24px; padding-bottom: 24px; }
+    h2 { border-top: 1px solid #e3ebf4; font-size: 26px; margin: 48px 0 16px; padding-top: 32px; }
+    h3 { font-size: 19px; margin-top: 30px; }
+    p, li { font-size: 16px; }
+    a { color: #0869c7; }
+    code { background: #eef4f9; border-radius: 3px; color: #153a65; font: 0.9em Consolas, monospace; padding: 2px 4px; }
+    pre { background: #071d3c; border-radius: 6px; color: #d9e8f7; overflow-x: auto; padding: 18px; }
+    pre code { background: transparent; color: inherit; padding: 0; }
+    blockquote { background: #eef7ff; border-left: 4px solid #1474e8; margin: 24px 0; padding: 4px 18px; }
+    table { border-collapse: collapse; display: block; margin: 20px 0; overflow-x: auto; width: 100%; }
+    th { background: #edf5ff; color: #102a52; text-align: left; }
+    th, td { border: 1px solid #d8e2ee; padding: 10px 12px; vertical-align: top; }
+    @media (max-width: 640px) { main { padding: 32px 18px 56px; } h1 { font-size: 30px; } h2 { font-size: 23px; } p, li { font-size: 15px; } }
+  </style>
+</head>
+<body>
+  <header>FootLook / Documentation</header>
+  <main>
+    <h1>FootLook documentation</h1>
+    <p>FootLook is zero-interaction observability for ASP.NET Core APIs. It captures eligible HTTP requests and responses through middleware, then makes the resulting captures available for local inspection, operational metrics, and live updates.</p>
+
+    <h2>What is FootLook?</h2>
+    <p>FootLook observes the ASP.NET Core request pipeline and records method, path, status code, duration, correlation information, and optional request and response bodies. Capture processing happens in a background worker, so the original application response is not held up by persistence.</p>
+    <ul>
+      <li>Capture request and response details without changing application endpoints.</li>
+      <li>Limit capture by path, method, content type, body size, and sampling rate.</li>
+      <li>Mask sensitive headers, query parameters, and body values.</li>
+      <li>Store captures in memory and append them to a JSONL file.</li>
+      <li>Stream persisted captures to connected SignalR clients.</li>
+    </ul>
+
+    <h2>Quickstart</h2>
+    <p>FootLook targets .NET 8 and ASP.NET Core applications using the minimal hosting model.</p>
+    <pre><code>dotnet add package FootLook.Core</code></pre>
+    <pre><code>using FootLook.Core.Extensions;
+using FootLook.Core.Hubs;
+using FootLook.Core.Options;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddFootLook(options =&gt;
+{
+    builder.Configuration.GetSection("FootLook").Bind(options);
+});
+builder.Services.AddSignalR();
+
+var app = builder.Build();
+app.UseFootLook();
+
+var footlookOptions = app.Services.GetRequiredService&lt;FootLookOptions&gt;();
+app.MapFootLookEndpoints(footlookOptions);
+app.MapHub&lt;CaptureHub&gt;("/footlook/live");
+app.Run();</code></pre>
+
+    <h2>Configuration</h2>
+    <pre><code>{
+  "FootLook": {
+    "Enabled": true,
+    "SamplingRate": 1.0,
+    "CaptureRequestBody": true,
+    "CaptureResponseBody": true,
+    "MaxBodyLength": 1048576,
+    "EndpointBasePath": "/footlook",
+    "QueCapacity": 10000,
+    "ServiceName": "OrdersApi"
+  }
+}</code></pre>
+    <table>
+      <thead><tr><th>Option</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>Enabled</code></td><td>Enables or disables new captures.</td></tr>
+        <tr><td><code>SamplingRate</code></td><td>Sets the fraction of eligible requests to capture.</td></tr>
+        <tr><td><code>MaxBodyLength</code></td><td>Limits retained request and response body size.</td></tr>
+        <tr><td><code>EndpointBasePath</code></td><td>Sets the management API route prefix.</td></tr>
+        <tr><td><code>QueCapacity</code></td><td>Sets the bounded asynchronous capture queue capacity.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Live captures</h2>
+    <p>Connect a SignalR client to <code>/footlook/live</code> and listen for the <code>captureReceived</code> event. The built-in runtime dashboard is available at <code>/footlook.html</code>.</p>
+
+    <h2>Management API</h2>
+    <table>
+      <thead><tr><th>Method</th><th>Route</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>GET</td><td><code>/footlook/health</code></td><td>Checks service health and capture state.</td></tr>
+        <tr><td>GET</td><td><code>/footlook/captures</code></td><td>Lists filtered, paged captures.</td></tr>
+        <tr><td>GET</td><td><code>/footlook/captures/stats</code></td><td>Returns aggregate request statistics.</td></tr>
+        <tr><td>POST</td><td><code>/footlook/captures/pause</code></td><td>Pauses capture activity.</td></tr>
+        <tr><td>POST</td><td><code>/footlook/captures/resume</code></td><td>Resumes capture activity.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Production guidance</h2>
+    <blockquote><p>Protect FootLook management endpoints and the SignalR hub with authorization before exposing an application outside a trusted environment.</p></blockquote>
+    <ul>
+      <li>Review body capture, masking, hashing, and retention settings.</li>
+      <li>Exclude dashboards, probes, static paths, and other known noise sources.</li>
+      <li>Set clear <code>ServiceName</code> and <code>EnvironmentName</code> values.</li>
+      <li>Monitor reliability status for queue pressure, retries, and failed persistence.</li>
+    </ul>
+  </main>
+</body>
+</html>

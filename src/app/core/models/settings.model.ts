@@ -1,0 +1,1 @@
+export interface CaptureSettings { ignoredPaths: string[]; maskedFields: string[]; retentionDays: number; }

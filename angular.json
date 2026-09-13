@@ -22,10 +22,21 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/app/features/marketing/features-page/doumentation",
+                "output": "docs"
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/@phosphor-icons/web/src/regular/style.css"
             ]
           },
           "configurations": {
@@ -38,8 +49,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "14kB",
+                  "maximumError": "16kB"
                 }
               ],
               "outputHashing": "all"

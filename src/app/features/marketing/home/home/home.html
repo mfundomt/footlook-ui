@@ -1,0 +1,340 @@
+    <div class="landing">
+  <header class="header">
+    <a class="logo" routerLink="/product">
+      <b><img src="assets/logo-transparent.png" alt="FootLook Logo" /></b> FootLook</a>
+
+    <nav>
+      <a href="#features">Product</a>
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#developers">Developers</a>
+      <!--<a>Pricing</a>-->
+      <a href="/docs/doc.html" target="_blank" rel="noopener">Docs <i data-lucide="external-link" aria-hidden="true"></i></a>
+    </nav>
+
+    <a class="demo" href="https://www.footlook.co.za/footlook.html" target="_blank" rel="noopener">Get Started →</a>
+  </header>
+
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <small class="eyebrow">Zero-interaction observability for .NET</small>
+      <h1>
+        See what your API<br />
+        <span>is actually doing.</span>
+      </h1>
+      <p>
+        Zero performance aro-interaction API observability for .NET. Capture requests,
+        responses,nd correlation data without rewriting your application.
+      </p>
+
+      <div class="actions">
+        <a class="primary" href="https://www.footlook.co.za/footlook.html">Start Monitoring →</a>
+        <!--<a class="outline" href="#demo">View Live Demo</a> -->
+      </div>
+
+      <div class="notes">
+        <span>
+          <b>Few lines to install</b>
+          <small>Add, run, and observe.</small>
+        </span>
+        <span>
+          <b>Production ready</b>
+          <small>Async, reliable, secure.</small>
+        </span>
+        <span>
+          <b>Built for .NET</b>
+          <small>ASP.NET Core native.</small>
+        </span>
+      </div>
+    </div>
+
+    <div class="product" id="demo">
+      <div class="bar">
+        ◆ FootLook
+        <small><i data-lucide="search" aria-hidden="true"></i><i data-lucide="bell" aria-hidden="true"></i><i data-lucide="settings" aria-hidden="true"></i> AD</small>
+      </div>
+
+      <div class="console">
+        <aside>
+          <b><i data-lucide="layout-dashboard" aria-hidden="true"></i> Overview</b>
+          <span><i data-lucide="inbox" aria-hidden="true"></i> Captures</span>
+          <span><i data-lucide="search" aria-hidden="true"></i> Search</span>
+          <span><i data-lucide="circle-alert" aria-hidden="true"></i> Errors</span>
+          <span><i data-lucide="gauge" aria-hidden="true"></i> Performance</span>
+          <span><i data-lucide="route" aria-hidden="true"></i> Endpoints</span>
+          <span><i data-lucide="settings" aria-hidden="true"></i> Settings</span>
+        </aside>
+
+        <div class="screen">
+          <h3>Overview</h3>
+          <div class="metrics">
+            <span>Requests (24h)<b>1,284</b><em>▲ 12.4%</em></span>
+            <span>Success Rate<b>98.7%</b><em>▲ 1.0%</em></span>
+            <span>Avg. Duration<b>142ms</b><em>▼ 6ms</em></span>
+          </div>
+
+          <div class="tables">
+            <div>
+              <strong>Recent Requests</strong>
+              @for (request of requests; track request.endpoint) {
+                <p>
+                  <b>{{ request.method }}</b>
+                  <code>{{ request.endpoint }}</code>
+                  <em>{{ request.status }}</em>
+                  <small>{{ request.duration }}</small>
+                </p>
+              }
+            </div>
+
+            <div class="request-detail">
+              <strong>Request Details</strong>
+              <b>POST /api/payments</b>
+              <em>201 Created　142ms</em>
+              <hr />
+              <small>Correlation ID</small>
+              <code>6f77d8c0-4e8d-4e11-9f03...</code>
+              <pre>amount: 125.00 | currency: USD</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="platform" id="resources">
+    <div class="wrap">
+      <b>Built for modern .NET APIs</b>
+      <span><img src="assets/.netCore.svg" alt="ASP.NET Core" /> ASP.NET Core</span>
+      <span><img src="assets/.net.svg" alt=".NET" /> .NET 8+</span>
+      <span><img src="assets/csharp.svg" alt="C#" /> C#</span>
+      <span><img src="assets/restAPI.png" alt="REST APIs" /> REST APIs</span>
+      <span><img src="assets/micro.png" alt="Microservices" /> Microservices</span>
+    </div>
+  </section>
+
+  <section class="section wrap" id="features">
+    <small class="eyebrow">WHY FOOTLOOK</small>
+    <h2>Your API is talking. <span>Start listening.</span></h2>
+    <p class="sub">
+      FootLook gives developers visibility into what’s actually happening inside their APIs.
+    </p>
+
+    <div class="cards">
+      @for (feature of $any(this).features; track feature.title) {
+        <article>
+          <i class="icon" [attr.data-lucide]="feature.icon" aria-hidden="true"></i>
+          <h3>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+          <ul>
+            @for (item of feature.items; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="section wrap split" id="how">
+    <div>
+      <small class="eyebrow">HOW IT WORKS</small>
+      <h2>From request to insight.</h2>
+      <p class="sub">
+        FootLook captures, processes and surfaces your API traffic without slowing you down.
+      </p>
+
+      <ol>
+        @for (item of $any(this).pipeline; track item.number) {
+          <li>
+            <b>{{ item.number }}</b>
+            <span><strong>{{ item.title }}</strong>{{ item.text }}</span>
+          </li>
+        }
+      </ol>
+    </div>
+
+    <div class="diagram">
+      <div class="diagram-flow">
+        <div class="diagram-flow__pipeline">
+          @for (box of boxes.slice(0, 5); track box.label) {
+            <span><i [attr.data-lucide]="box.icon" aria-hidden="true"></i>{{ box.label }}</span>
+          }
+        </div>
+        <div class="diagram-flow__sinks">
+          @for (box of boxes.slice(5, 7); track box.label) {
+            <span><i [attr.data-lucide]="box.icon" aria-hidden="true"></i>{{ box.label }}</span>
+          }
+        </div>
+        <div class="diagram-flow__ui">
+          @for (box of boxes.slice(7); track box.label) {
+            <strong><i [attr.data-lucide]="box.icon" aria-hidden="true"></i>{{ box.label }}</strong>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap inspect">
+    <div>
+      <small class="eyebrow">FULL CONTEXT</small>
+      <h2>
+        Stop guessing.<br />
+        <span>Inspect the request.</span>
+      </h2>
+      <p class="sub">Everything you need to understand a request in one place.</p>
+    </div>
+
+    <div class="dark-panel">
+      <aside class="capture-list">
+        <input placeholder="Search captures..." />
+        <button class="capture-row is-selected"><strong>POST /api/orders</strong><span>201 Created <time>10:21:41</time></span></button>
+        <button class="capture-row"><strong>GET /api/customers/4821</strong><span>200 OK <time>10:21:36</time></span></button>
+        <button class="capture-row"><strong>POST /api/orders</strong><span class="is-error">500 Error <time>10:21:32</time></span></button>
+        <button class="capture-row"><strong>PUT /api/orders/10482</strong><span>200 OK <time>10:21:28</time></span></button>
+        <button class="capture-row"><strong>DELETE /api/orders/10410</strong><span>204 No Content <time>10:21:24</time></span></button>
+      </aside>
+
+      <div class="capture-detail">
+        <header class="capture-meta">
+          <div><b>POST /api/orders</b><span class="status">201 Created</span><time>142ms</time></div>
+          <small>Correlation ID <code>8f7b4f1e-4c1b-4e11-9f95-3b2ef6b7c42</code></small>
+          <small>Trace ID <code>00-7c91e0b037b2cfb0d8e1c6f0f09a1c2d-4a1f2b3c4d5e6f7a-01</code></small>
+        </header>
+        <nav class="capture-tabs" aria-label="Capture detail tabs">
+          <button class="is-active">Request</button><button>Response</button><button>Headers</button><button>Metadata</button>
+        </nav>
+        <div class="payload-grid">
+          <section class="payload-pane"><header>Request <i data-lucide="copy" aria-hidden="true"></i></header><pre><span><i>1</i>&#123;</span><span><i>2</i>  <b>"customerId"</b>: <em>4821</em>,</span><span><i>3</i>  <b>"items"</b>: [</span><span><i>4</i>    &#123;</span><span><i>5</i>      <b>"sku"</b>: <strong>"SKU-123"</strong>,</span><span><i>6</i>      <b>"qty"</b>: <em>2</em>,</span><span><i>7</i>      <b>"price"</b>: <em>49.99</em></span><span><i>8</i>    &#125;</span><span><i>9</i>  ],</span><span><i>10</i>  <b>"shipping"</b>: <strong>"Standard"</strong></span><span><i>11</i>&#125;</span></pre></section>
+          <section class="payload-pane"><header>Response <i data-lucide="copy" aria-hidden="true"></i></header><pre><span><i>1</i>&#123;</span><span><i>2</i>  <b>"orderId"</b>: <strong>"ORD-10482"</strong>,</span><span><i>3</i>  <b>"status"</b>: <strong>"Confirmed"</strong>,</span><span><i>4</i>  <b>"total"</b>: <em>49.99</em>,</span><span><i>5</i>  <b>"currency"</b>: <strong>"USD"</strong>,</span><span><i>6</i>  <b>"createdAt"</b>: <strong>"2025-05-14T10:21:41Z"</strong></span><span><i>7</i>&#125;</span></pre></section>
+        </div>
+      </div>
+    </div>
+    
+  </section>
+
+  <section class="visibility" id="developers">
+    <div class="wrap visibility-inner">
+      <div>
+        <small class="eyebrow">SIMPLE SETUP</small>
+        <h2>
+          Few lines.<br />
+          <span>Full visibility.</span>
+        </h2>
+        <p>Add observability without rewriting your API.</p>
+      </div>
+
+      <pre><i>    // Program.cs</i><br />
+    builder.Services.AddFootLook(options =&gt;<br />    &#123;<br />	builder.Configuration.GetSection("FootLook").Bind(options);<br />    &#125;);<br /><br />
+    builder.Services.AddSignalR();<br /><br />
+    app.UseFootLook();<br /><br />
+    var footlookOptions = app.Services.GetRequiredService&lt;FootLookOptions&gt;();<br />
+    app.MapFootLookEndpoints(footlookOptions);<br /><br />
+    app.MapHub&lt;FootLook.Core.Hubs.CaptureHub&gt;("/footlook/live");<br /><br />
+    app.Run();</pre>
+
+      <div class="equation">
+        <span>
+          Your Existing API<br />
+          <small>(ASP.NET Core)</small>
+        </span>
+        <b>+</b>
+        <strong> FootLook</strong>
+        <b>=</b>
+        <span>
+          Observable API<br />
+          <small>with full visibility</small>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap privacy">
+    <div>
+      <small class="eyebrow">YOUR DATA, YOUR RULES</small>
+      <h2>
+        See more.<br />
+        <span>Expose less.</span>
+      </h2>
+      <p class="sub">Powerful observability with privacy built in.</p>
+    </div>
+
+    <div class="privacy-grid">
+      @for (item of $any(this).privacy; track item.title) {
+        <article>
+          <i [attr.data-lucide]="item.icon" aria-hidden="true"></i>
+          <strong>{{ item.title }}</strong>
+          <p>{{ item.description }}</p>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="steps">
+    <div class="wrap step-grid">
+      <div>
+        <h2>
+          Get from zero<br />
+          to observable.
+        </h2>
+        <p>Start seeing your API traffic in just a few minutes.</p>
+      </div>
+
+      @for (step of $any(this).steps; track step.number) {
+        <article>
+          <b>{{ step.number }}</b>
+          <strong>{{ step.title }}</strong>
+          <p>{{ step.text }}</p>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="cta wrap">
+    <b><i data-lucide="rocket" aria-hidden="true"></i></b>
+    <div>
+      <h2>
+        Your API already has the data.<br />
+        <span>FootLook lets you see it.</span>
+      </h2>
+      <p>No rewrites. No complicated agents. Just observable APIs.</p>
+    </div>
+    </section>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <div>
+        <a class="logo"> FootLook</a>
+        <p>
+          API observability for .NET developers.<br />
+          Capture. Understand. Correlate. Control.
+        </p>
+      </div>
+
+      <div>
+        <b>Product</b>
+        <a href="#resources">Features</a>
+        <a href="#how-it-works">How it works</a>
+        <!--<a>Pricing</a>-->
+      </div>
+
+      <div>
+        <b>Developers</b>
+        <a href="#documentation">Documentation</a>
+        <a href="#installation">Installation</a>
+        <a href="#api-reference">API Reference</a>
+      </div>
+
+      <div>
+        <b>Resources</b>
+        <a href="#blog">Blog</a>
+        <a href="#guides">Guides</a>
+        <a href="#changelog">Changelog</a>
+      </div>
+
+      <div>
+        <b>Stay in the loop</b>
+        <p>Product updates and best practices.</p>
+      </div>
+    </div>
+  </footer>
+</div>

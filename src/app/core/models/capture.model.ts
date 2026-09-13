@@ -1,0 +1,1 @@
+export interface Capture { id: string; method: string; path: string; status: number; durationMs: number; capturedAt: string; }
