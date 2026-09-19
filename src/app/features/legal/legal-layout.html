@@ -1,0 +1,29 @@
+<div class="legal-shell">
+  <header class="legal-header">
+    <a class="legal-brand" routerLink="/" aria-label="FootLook home">
+      <img src="assets/logo-transparent.png" alt="" width="22" height="22" /> FootLook
+    </a>
+    <a class="legal-back" routerLink="/"><span aria-hidden="true">←</span> Back to home</a>
+  </header>
+
+  <main id="main" tabindex="-1" class="legal-doc">
+    <router-outlet />
+  </main>
+
+  <footer class="legal-footer">
+    <nav aria-label="Legal">
+      <ul>
+        @for (link of links; track link.path) {
+          <li><a [routerLink]="link.path">{{ link.label }}</a></li>
+        }
+      </ul>
+    </nav>
+    <p>
+      &copy; {{ year }} {{ business.legalName || business.tradingName }}.
+      @if (business.email) {
+        Contact: <a [href]="'mailto:' + business.email">{{ business.email }}</a>
+      }
+    </p>
+    <p class="legal-small">{{ trademarkNotice }}</p>
+  </footer>
+</div>

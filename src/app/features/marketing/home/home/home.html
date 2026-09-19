@@ -17,14 +17,14 @@
 
   <section class="hero wrap">
     <div class="hero-copy">
-      <small class="eyebrow">Zero-interaction observability for .NET</small>
+      <small class="eyebrow">API observability for .NET</small>
       <h1>
         See what your API<br />
         <span>is actually doing.</span>
       </h1>
       <p>
-        Zero performance aro-interaction API observability for .NET. Capture requests,
-        responses,nd correlation data without rewriting your application.
+        Capture requests, responses and correlation data from your ASP.NET Core API
+        without rewriting your application.
       </p>
 
       <div class="actions">
@@ -38,8 +38,8 @@
           <small>Add, run, and observe.</small>
         </span>
         <span>
-          <b>Production ready</b>
-          <small>Async, reliable, secure.</small>
+          <b>Asynchronous capture</b>
+          <small>Queued, processed in the background.</small>
         </span>
         <span>
           <b>Built for .NET</b>
@@ -50,7 +50,7 @@
 
     <div class="product" id="demo">
       <div class="bar">
-        ◆ FootLook
+        ◆ FootLook <em class="sample-tag">Sample data</em>
         <small><i data-lucide="search" aria-hidden="true"></i><i data-lucide="bell" aria-hidden="true"></i><i data-lucide="settings" aria-hidden="true"></i> AD</small>
       </div>
 
@@ -104,11 +104,11 @@
   <section class="platform" id="resources">
     <div class="wrap">
       <b>Built for modern .NET APIs</b>
-      <span><img src="assets/.netCore.svg" alt="ASP.NET Core" /> ASP.NET Core</span>
-      <span><img src="assets/.net.svg" alt=".NET" /> .NET 8+</span>
-      <span><img src="assets/csharp.svg" alt="C#" /> C#</span>
-      <span><img src="assets/restAPI.png" alt="REST APIs" /> REST APIs</span>
-      <span><img src="assets/micro.png" alt="Microservices" /> Microservices</span>
+      <span><i data-lucide="server" aria-hidden="true"></i> ASP.NET Core</span>
+      <span><i data-lucide="box" aria-hidden="true"></i> .NET 8+</span>
+      <span><i data-lucide="braces" aria-hidden="true"></i> C#</span>
+      <span><i data-lucide="network" aria-hidden="true"></i> REST APIs</span>
+      <span><i data-lucide="boxes" aria-hidden="true"></i> Microservices</span>
     </div>
   </section>
 
@@ -140,7 +140,7 @@
       <small class="eyebrow">HOW IT WORKS</small>
       <h2>From request to insight.</h2>
       <p class="sub">
-        FootLook captures, processes and surfaces your API traffic without slowing you down.
+        FootLook captures, processes and surfaces your API traffic asynchronously.
       </p>
 
       <ol>
@@ -196,7 +196,7 @@
 
       <div class="capture-detail">
         <header class="capture-meta">
-          <div><b>POST /api/orders</b><span class="status">201 Created</span><time>142ms</time></div>
+          <div><b>POST /api/orders</b><span class="status">201 Created</span><time>142ms</time><span class="sample-tag">Sample data</span></div>
           <small>Correlation ID <code>8f7b4f1e-4c1b-4e11-9f95-3b2ef6b7c42</code></small>
           <small>Trace ID <code>00-7c91e0b037b2cfb0d8e1c6f0f09a1c2d-4a1f2b3c4d5e6f7a-01</code></small>
         </header>
@@ -255,7 +255,7 @@
         See more.<br />
         <span>Expose less.</span>
       </h2>
-      <p class="sub">Powerful observability with privacy built in.</p>
+      <p class="sub">Observability with privacy controls.</p>
     </div>
 
     <div class="privacy-grid">
@@ -276,7 +276,7 @@
           Get from zero<br />
           to observable.
         </h2>
-        <p>Start seeing your API traffic in just a few minutes.</p>
+        <p>Four steps from installation to seeing your API traffic.</p>
       </div>
 
       @for (step of $any(this).steps; track step.number) {
@@ -303,7 +303,7 @@
   <footer>
     <div class="wrap footer-grid">
       <div>
-        <a class="logo"> FootLook</a>
+        <span class="logo footer-logo">FootLook</span>
         <p>
           API observability for .NET developers.<br />
           Capture. Understand. Correlate. Control.
@@ -312,29 +312,47 @@
 
       <div>
         <b>Product</b>
-        <a href="#resources">Features</a>
-        <a href="#how-it-works">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
         <!--<a>Pricing</a>-->
       </div>
 
       <div>
         <b>Developers</b>
-        <a href="#documentation">Documentation</a>
-        <a href="#installation">Installation</a>
-        <a href="#api-reference">API Reference</a>
+        <a href="/docs/doc.html" target="_blank" rel="noopener" aria-label="Documentation (opens in a new tab)">Documentation</a>
       </div>
 
       <div>
-        <b>Resources</b>
-        <a href="#blog">Blog</a>
-        <a href="#guides">Guides</a>
-        <a href="#changelog">Changelog</a>
+        <b>Legal</b>
+        @for (link of legalLinks; track link.path) {
+          <a [routerLink]="link.path">{{ link.label }}</a>
+        }
       </div>
 
       <div>
-        <b>Stay in the loop</b>
-        <p>Product updates and best practices.</p>
+        <b>Company</b>
+        @if (business.legalName) {
+          <p>
+            {{ business.legalName }}
+            @if (business.registrationNumber) {<br />Reg. no. {{ business.registrationNumber }}}
+          </p>
+        }
+        @if (business.physicalAddress) {
+          <p>{{ business.physicalAddress }}</p>
+        }
+        @if (business.email) {
+          <a [href]="'mailto:' + business.email">{{ business.email }}</a>
+        }
+        @if (business.phone) {
+          <p>{{ business.phone }}</p>
+        }
+        <a routerLink="/terms">Company details</a>
       </div>
+    </div>
+
+    <div class="wrap footer-legal">
+      <p>&copy; {{ year }} {{ business.legalName || business.tradingName }}. All rights reserved.</p>
+      <p>{{ trademark }}</p>
     </div>
   </footer>
 </div>
