@@ -1,0 +1,31 @@
+@if (analytics.enabled) {
+  @if (consent.panelOpen()) {
+    <section
+      #panel
+      class="cookie-panel"
+      role="region"
+      aria-labelledby="cookie-title"
+      aria-describedby="cookie-desc"
+      tabindex="-1"
+    >
+      <h2 id="cookie-title">Cookies and analytics</h2>
+      <p id="cookie-desc">
+        We would like to use Google Analytics cookies to understand how this website is used. They stay off unless you
+        accept. Read our <a routerLink="/cookies">Cookie Policy</a> and <a routerLink="/privacy">Privacy Policy</a>.
+      </p>
+      <p class="cookie-current">
+        @switch (consent.status()) {
+          @case ('granted') { Your current choice: analytics accepted. }
+          @case ('denied') { Your current choice: analytics rejected. }
+          @default { You have not chosen yet. }
+        }
+      </p>
+      <div class="cookie-actions">
+        <button type="button" class="cookie-btn" (click)="choose(false)">Reject analytics</button>
+        <button type="button" class="cookie-btn" (click)="choose(true)">Accept analytics</button>
+      </div>
+    </section>
+  } @else {
+    <button #settingsButton type="button" class="cookie-settings" (click)="reopen()">Cookie settings</button>
+  }
+}

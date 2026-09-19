@@ -1,0 +1,14 @@
+.cookie-panel { background: #fff; border: 1px solid #b9cbe3; border-radius: 10px; bottom: 16px; box-shadow: 0 10px 34px rgba(18, 38, 75, 0.22); color: #12264b; font-family: Arial, sans-serif; left: 16px; max-width: 520px; padding: 20px; position: fixed; right: 16px; z-index: 1000; }
+.cookie-panel:focus { outline: none; }
+.cookie-panel h2 { font-size: 18px; margin: 0 0 8px; }
+.cookie-panel p { font-size: 15px; line-height: 1.5; margin: 0 0 10px; }
+.cookie-panel a { color: #0b57c4; text-decoration: underline; text-underline-offset: 3px; }
+.cookie-current { color: #4a5b74; font-size: 14px !important; }
+.cookie-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+/* Reject and Accept share one style on purpose, so neither choice is visually favoured. */
+.cookie-btn { background: #fff; border: 2px solid #0b57c4; border-radius: 6px; color: #0b57c4; cursor: pointer; flex: 1 1 140px; font-size: 15px; font-weight: 700; padding: 11px 16px; }
+.cookie-btn:hover { background: #eef5ff; }
+.cookie-settings { background: #12264b; border: 0; border-radius: 20px; bottom: 16px; box-shadow: 0 4px 14px rgba(18, 38, 75, 0.3); color: #fff; cursor: pointer; font-family: Arial, sans-serif; font-size: 13px; font-weight: 700; left: 16px; padding: 9px 16px; position: fixed; z-index: 1000; }
+.cookie-settings:hover { background: #0b57c4; }
+.cookie-panel a:focus-visible, .cookie-btn:focus-visible, .cookie-settings:focus-visible { outline: 3px solid #0b57c4; outline-offset: 3px; }
+.cookie-settings:focus-visible { outline-color: #fff; box-shadow: 0 0 0 5px #0b57c4; }
