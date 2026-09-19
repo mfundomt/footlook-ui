@@ -1,1 +1,3 @@
 :host { display: block; min-height: 100dvh; }
+.skip-link { background: #12264b; border-radius: 0 0 6px 0; color: #fff; font-size: 14px; font-weight: 700; left: 0; padding: 12px 18px; position: absolute; top: 0; transform: translateY(-120%); z-index: 100; }
+.skip-link:focus { transform: none; }
