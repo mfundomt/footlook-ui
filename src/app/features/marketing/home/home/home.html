@@ -12,7 +12,7 @@
       <a href="/docs/doc.html" target="_blank" rel="noopener">Docs <i data-lucide="external-link" aria-hidden="true"></i><span class="sr-only"> (opens in a new tab)</span></a>
     </nav>
 
-    <a class="demo" [href]="dashboardUrl" target="_blank" rel="noopener">Get Started <span aria-hidden="true">→</span><span class="sr-only"> (opens in a new tab)</span></a>
+    <a class="demo" routerLink="/login">Get Started <span aria-hidden="true">→</span></a>
   </header>
 
   <main id="main" tabindex="-1">
@@ -29,7 +29,7 @@
       </p>
 
       <div class="actions">
-        <a class="primary" [href]="dashboardUrl">Start Monitoring <span aria-hidden="true">→</span></a>
+        <a class="primary" routerLink="/login">Start Monitoring <span aria-hidden="true">→</span></a>
         <!--<a class="outline" href="#demo">View Live Demo</a> -->
       </div>
 

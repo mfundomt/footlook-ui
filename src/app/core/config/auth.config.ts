@@ -1,3 +1,5 @@
+import { DASHBOARD_URL } from './dashboard.config';
+
 /**
  * Microsoft sign-in (Entra ID) settings for the login and register screens.
  *
@@ -24,11 +26,8 @@ export const MSAL_REDIRECT_PATH = '/auth/redirect.html';
 /** Base URL of the FootLook backend. */
 export const AUTH_API_URL = 'https://footlook-dashboard.azurewebsites.net/footlook';
 
-/**
- * Where a signed-in developer is sent, with the session in the URL fragment.
- * TODO: unify with DASHBOARD_URL in dashboard.config.ts once that file is committed.
- */
-export const DASHBOARD_URL_FOR_HANDOFF = 'https://footlook-dashboard.azurewebsites.net/footlook.html';
+/** Where a signed-in developer is sent, with the session in the URL fragment. */
+export const DASHBOARD_URL_FOR_HANDOFF = DASHBOARD_URL;
 
 export const LOGIN_ROUTE = '/login';
 export const REGISTER_ROUTE = '/register';
