@@ -8,6 +8,17 @@ export const routes: Routes = [
   { path: 'developers', component: Home, title: 'FootLook | Developers' },
 
   {
+    path: 'login',
+    title: 'Sign in | FootLook',
+    loadComponent: () => import('./features/auth/login').then((m) => m.Login),
+  },
+  {
+    path: 'register',
+    title: 'Create account | FootLook',
+    loadComponent: () => import('./features/auth/register').then((m) => m.Register),
+  },
+
+  {
     path: '',
     component: LegalLayout,
     children: [

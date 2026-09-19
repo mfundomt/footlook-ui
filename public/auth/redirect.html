@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex">
+  <title>Microsoft Authentication</title>
+</head>
+<body>
+  <!-- Return page for the Microsoft sign-in popup. It hands the response to the FootLook tab and closes. -->
+  <script src="msal-redirect-bridge.min.js"></script>
+  <script>msalRedirectBridge.broadcastResponseToMainFrame();</script>
+</body>
+</html>
