@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BUSINESS } from '../../../../core/config/business.config';
+import { DASHBOARD_URL } from '../../../../core/config/dashboard.config';
 import { LEGAL_LINKS, TRADEMARK_NOTICE } from '../../../../core/config/legal-links';
 import {
   Activity,
@@ -33,10 +34,6 @@ import {
   ShieldCheck,
   SlidersHorizontal,
   Zap,
-  Box,
-  Boxes,
-  Braces,
-  Network,
   Server,
 } from 'lucide';
 
@@ -69,10 +66,6 @@ const landingPageIcons = {
   ShieldCheck,
   SlidersHorizontal,
   Zap,
-  Box,
-  Boxes,
-  Braces,
-  Network,
   Server,
 };
 
@@ -83,6 +76,7 @@ const landingPageIcons = {
   templateUrl: './home.html',
 })
 export class Home implements AfterViewInit {
+  protected readonly dashboardUrl = DASHBOARD_URL;
   protected readonly legalLinks = LEGAL_LINKS;
   protected readonly business = BUSINESS;
   protected readonly trademark = TRADEMARK_NOTICE;

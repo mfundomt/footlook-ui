@@ -12,7 +12,7 @@
       <a href="/docs/doc.html" target="_blank" rel="noopener">Docs <i data-lucide="external-link" aria-hidden="true"></i><span class="sr-only"> (opens in a new tab)</span></a>
     </nav>
 
-    <a class="demo" href="https://www.footlook.co.za/footlook.html" target="_blank" rel="noopener">Get Started <span aria-hidden="true">→</span><span class="sr-only"> (opens in a new tab)</span></a>
+    <a class="demo" [href]="dashboardUrl" target="_blank" rel="noopener">Get Started <span aria-hidden="true">→</span><span class="sr-only"> (opens in a new tab)</span></a>
   </header>
 
   <main id="main" tabindex="-1">
@@ -29,7 +29,7 @@
       </p>
 
       <div class="actions">
-        <a class="primary" href="https://www.footlook.co.za/footlook.html">Start Monitoring <span aria-hidden="true">→</span></a>
+        <a class="primary" [href]="dashboardUrl">Start Monitoring <span aria-hidden="true">→</span></a>
         <!--<a class="outline" href="#demo">View Live Demo</a> -->
       </div>
 
@@ -105,11 +105,11 @@
   <section class="platform" id="resources">
     <div class="wrap">
       <b>Built for modern .NET APIs</b>
-      <span><i data-lucide="server" aria-hidden="true"></i> ASP.NET Core</span>
-      <span><i data-lucide="box" aria-hidden="true"></i> .NET 8+</span>
-      <span><i data-lucide="braces" aria-hidden="true"></i> C#</span>
-      <span><i data-lucide="network" aria-hidden="true"></i> REST APIs</span>
-      <span><i data-lucide="boxes" aria-hidden="true"></i> Microservices</span>
+      <span><img src="assets/.netCore.svg" alt="" /> ASP.NET Core</span>
+      <span><img src="assets/.net.svg" alt="" /> .NET 8+</span>
+      <span><img src="assets/csharp.svg" alt="" /> C#</span>
+      <span><img src="assets/restAPI.png" alt="" /> REST APIs</span>
+      <span><img src="assets/micro.png" alt="" /> Microservices</span>
     </div>
   </section>
 

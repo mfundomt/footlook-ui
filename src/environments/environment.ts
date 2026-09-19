@@ -1,2 +1,2 @@
 // Google Analytics 4 Measurement ID ("G-XXXXXXXXXX"). Leave empty to keep analytics, cookies and the consent banner switched off.
-export const environment = { production: false, apiUrl: '/api', gaMeasurementId: '' as string } as const;
+export const environment = { production: false, apiUrl: '/api', gaMeasurementId: 'G-TEST1234' as string } as const;
