@@ -134,6 +134,11 @@ footer p,footer a { color:#a9bdd7; font-size:14px; line-height:1.5 }
 footer a { display:block; margin-bottom:10px }
 footer b { display:block; font-size:14px; margin-bottom:10px }
 footer input { background:#112e53; border:1px solid #305274; color:#fff; font-size:8px; padding:7px }
+.footer-logo { display:block; font-size:16px; margin-bottom:10px }
+.footer-legal { border-top:1px solid #1c3760; margin-top:24px; padding-top:16px }
+.footer-legal p { color:#a9bdd7; font-size:13px; line-height:1.5; margin:0 0 6px; max-width:760px }
+.sample-tag { background:#0e3a6b; border:1px solid #2f6db3; border-radius:9px; color:#d6e8ff; font-size:8px; font-style:normal; font-weight:700; letter-spacing:.3px; margin-left:8px; padding:2px 6px; text-transform:uppercase }
+.platform .lucide { height:18px; width:18px }
 @media (max-width:900px) {
   nav { gap:12px }
   .hero { grid-template-columns:1fr }

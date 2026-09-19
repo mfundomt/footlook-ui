@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, ElementRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { BUSINESS } from '../../../../core/config/business.config';
+import { LEGAL_LINKS, TRADEMARK_NOTICE } from '../../../../core/config/legal-links';
 import {
   Activity,
   Bell,
@@ -31,6 +33,11 @@ import {
   ShieldCheck,
   SlidersHorizontal,
   Zap,
+  Box,
+  Boxes,
+  Braces,
+  Network,
+  Server,
 } from 'lucide';
 
 const landingPageIcons = {
@@ -62,6 +69,11 @@ const landingPageIcons = {
   ShieldCheck,
   SlidersHorizontal,
   Zap,
+  Box,
+  Boxes,
+  Braces,
+  Network,
+  Server,
 };
 
 @Component({
@@ -71,6 +83,11 @@ const landingPageIcons = {
   templateUrl: './home.html',
 })
 export class Home implements AfterViewInit {
+  protected readonly legalLinks = LEGAL_LINKS;
+  protected readonly business = BUSINESS;
+  protected readonly trademark = TRADEMARK_NOTICE;
+  protected readonly year = new Date().getFullYear();
+
   constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
 
   ngAfterViewInit(): void {
@@ -93,6 +110,6 @@ export class Home implements AfterViewInit {
     { icon: 'shield-alert', title: 'Sensitive Headers', description: 'Automatically mask sensitive header values.' }, { icon: 'search', title: 'Query Parameters', description: 'Control which query parameters are captured.' }, { icon: 'file-text', title: 'Request Bodies', description: 'Capture or skip request bodies as needed.' }, { icon: 'fingerprint', title: 'IP & User-Agent', description: 'Hash IP addresses and user-agent strings.' }, { icon: 'clock-3', title: 'Retention Controls', description: 'Control how long captures are retained.' }, { icon: 'shield-check', title: 'Role & Access', description: 'Restrict access to captures and settings.' },
   ];
   protected readonly steps = [
-    { number: '1', title: 'Install', text: 'Add FootLook to your ASP.NET Core application in two lines.' }, { number: '2', title: 'Configure', text: 'Choose capture, privacy, retention and ignored-path settings.' }, { number: '3', title: 'Observe', text: 'Open the FootLook dashboard and start investigating.' }, { number: '4', title: 'Understand', text: 'Search captures, inspect failures and follow request context.' },
+    { number: '1', title: 'Install', text: 'Add FootLook to your ASP.NET Core application with a few lines of code.' }, { number: '2', title: 'Configure', text: 'Choose capture, privacy, retention and ignored-path settings.' }, { number: '3', title: 'Observe', text: 'Open the FootLook dashboard and start investigating.' }, { number: '4', title: 'Understand', text: 'Search captures, inspect failures and follow request context.' },
   ];
 }
