@@ -1,5 +1,5 @@
 /** Date the legal pages were last reviewed. Update it whenever their wording changes. */
-export const LEGAL_LAST_UPDATED = '19 September 2026';
+export const LEGAL_LAST_UPDATED = '20 September 2026';
 
 export const LEGAL_LINKS = [
   { label: 'Privacy Policy', path: '/privacy' },

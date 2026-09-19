@@ -12,8 +12,9 @@ import { Detail } from './detail';
     <p class="legal-meta">Last updated: {{ updated }}</p>
 
     <p>
-      These terms apply to your use of the FootLook website at <strong>footlook.co.za</strong>. By using the website
-      you agree to them. If you do not agree, please do not use the website.
+      These terms apply to your use of the FootLook website at <strong>footlook.co.za</strong> and of your FootLook
+      account. By using the website, or by ticking the box to accept these terms and creating an account, you agree to
+      them. If you do not agree, please do not use the website or create an account.
     </p>
 
     <h2>1. Who we are</h2>
@@ -46,13 +47,24 @@ import { Detail } from './detail';
       <li>We may change, suspend or remove the website or any part of it at any time.</li>
     </ul>
 
-    <h2>3. The FootLook software</h2>
+    <h2>3. Your FootLook account</h2>
+    <ul>
+      <li>You need an account to sign in to the FootLook dashboard. You create one by signing in with a work or personal Microsoft account. We do not ask for or store a password.</li>
+      <li>You must be 18 or older, and you must be allowed to enter into these terms. If you sign up for an organisation, you confirm you have its authority to do so.</li>
+      <li>Keep your Microsoft account secure. You are responsible for activity under your FootLook account, so tell us promptly if you think someone else has used it.</li>
+      <li>Use FootLook only to observe APIs and systems that you own or are authorised to observe. You are responsible for making sure you may capture and view that traffic, including any personal information of your own users that it contains.</li>
+      <li>Do not share your access, resell it, or try to reach another person's captures or account.</li>
+      <li>We may suspend or close an account that breaks these terms or is used to harm the service or other people. You may ask us to delete your account at any time by contacting the Information Officer named in our <a routerLink="/privacy">Privacy Policy</a>.</li>
+      <li>We record when you accept these terms, as described in the Privacy Policy.</li>
+    </ul>
+
+    <h2>4. The FootLook software</h2>
     <p>
-      These terms cover the website. If you download or use the FootLook software, its own licence or agreement
+      These terms cover the website and your account. If you download or use the FootLook software, its own licence or agreement
       applies to that use. Product descriptions on the website are general information, and features may change.
     </p>
 
-    <h2>4. Intellectual property</h2>
+    <h2>5. Intellectual property</h2>
     <p>
       The FootLook name, logo, website text, design and code are owned by us or our licensors and are protected by
       copyright and other laws. You may view the website and share links to it, but you may not copy or reuse
@@ -60,10 +72,10 @@ import { Detail } from './detail';
     </p>
     <p class="legal-note">{{ trademark }}</p>
 
-    <h2>5. Links and third-party services</h2>
-    <p>The website may link to or load content from other parties (for example documentation tooling and analytics). We do not control those parties and are not responsible for their content or practices.</p>
+    <h2>6. Links and third-party services</h2>
+    <p>The website may link to or load content from other parties (for example documentation tooling, analytics and Microsoft, which provides sign-in). We do not control those parties and are not responsible for their content or practices.</p>
 
-    <h2>6. No warranty, and limits on our liability</h2>
+    <h2>7. No warranty, and limits on our liability</h2>
     <p>
       We work to keep the website accurate and available, but it is provided "as is". To the fullest extent the law
       allows, we do not promise that it will be uninterrupted or error-free, and we are not liable for indirect or
@@ -72,13 +84,13 @@ import { Detail } from './detail';
       gross negligence or intentional harm.
     </p>
 
-    <h2>7. Privacy and cookies</h2>
+    <h2>8. Privacy and cookies</h2>
     <p>
       How we handle personal information is described in our <a routerLink="/privacy">Privacy Policy</a> and
       <a routerLink="/cookies">Cookie Policy</a>. Refunds are covered in our <a routerLink="/refunds">Refund Policy</a>.
     </p>
 
-    <h2>8. Governing law</h2>
+    <h2>9. Governing law</h2>
     <p>
       These terms are governed by the laws of the Republic of South Africa. You consent to the jurisdiction of the
       courts of <app-detail [value]="business.jurisdiction" label="court jurisdiction, e.g. Gauteng" />, without limiting
@@ -86,10 +98,10 @@ import { Detail } from './detail';
       Goods and Services Ombud, where the law allows.
     </p>
 
-    <h2>9. Changes</h2>
+    <h2>10. Changes</h2>
     <p>We may update these terms. The version on this page, with its "last updated" date, is the one that applies.</p>
 
-    <h2>10. Contact</h2>
+    <h2>11. Contact</h2>
     <p>Questions about these terms: <app-detail [value]="business.email" label="contact email" />.</p>
   `,
 })

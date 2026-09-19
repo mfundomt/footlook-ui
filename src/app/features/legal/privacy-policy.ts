@@ -13,12 +13,12 @@ import { Detail } from './detail';
 
     <p>
       This policy explains how <strong>{{ business.tradingName }}</strong> ("we", "us") handles personal information
-      when you visit <strong>footlook.co.za</strong> (the "website"). We follow the Protection of Personal Information
-      Act 4 of 2013 ("POPIA").
+      when you visit <strong>footlook.co.za</strong> (the "website") and when you create or use a FootLook account
+      (your "account"). We follow the Protection of Personal Information Act 4 of 2013 ("POPIA").
     </p>
     <p class="legal-note">
-      This policy covers the website only. It does not describe the FootLook software you install in your own
-      applications, which runs in your environment and is described in its own documentation.
+      This policy covers the website and your account. It does not describe the FootLook software you install in your
+      own applications, which runs in your environment and is described in its own documentation.
     </p>
 
     <h2>1. Who is responsible</h2>
@@ -37,7 +37,7 @@ import { Detail } from './detail';
     </dl>
 
     <h2>2. What we collect and why</h2>
-    <p>We only collect what we need to run and improve the website. The website has no user accounts, no sign-up and no contact forms.</p>
+    <p>We only collect what we need to run and improve the website and to provide your account. The website has no contact forms. Creating an account is optional and uses your Microsoft account, so we never see or store a password.</p>
     <table>
       <thead>
         <tr><th>Information</th><th>Why we use it</th><th>When</th></tr>
@@ -54,6 +54,16 @@ import { Detail } from './detail';
           <td>Only if you accept analytics cookies. You can refuse or change your mind at any time.</td>
         </tr>
         <tr>
+          <td>Account information we receive from Microsoft when you sign up or sign in: your name, your email address, the identifiers Microsoft gives us for you (your Microsoft tenant and user ID), and whether it is a work or a personal Microsoft account.</td>
+          <td>To create your account, recognise you when you return, and let you sign in to observe your own API with FootLook.</td>
+          <td>When you sign up or sign in with Microsoft.</td>
+        </tr>
+        <tr>
+          <td>Sign-in records: the date and time of each sign-up and sign-in, your IP address and browser type, how many times you have signed in, and when you accepted the Terms of Use and this policy.</td>
+          <td>To keep accounts secure, detect misuse, and keep a record of your consent.</td>
+          <td>Each time you sign up or sign in.</td>
+        </tr>
+        <tr>
           <td>Anything you choose to send us by email: your name, email address and message.</td>
           <td>To reply to you.</td>
           <td>Only when you email us.</td>
@@ -65,14 +75,17 @@ import { Detail } from './detail';
     <h2>3. Our lawful basis</h2>
     <ul>
       <li><strong>Consent</strong> for analytics cookies. You may withdraw consent at any time through "Cookie settings".</li>
-      <li><strong>Legitimate interest</strong> for server logs (security and reliable delivery of the website).</li>
+      <li><strong>Consent</strong> when you create an account: you tick the box accepting the Terms of Use and this policy before signing up, and we record when you did.</li>
+      <li><strong>Providing your account</strong>: we need your account information to create the account and let you sign in.</li>
+      <li><strong>Legitimate interest</strong> for server logs and sign-in records (security and reliable delivery of the website and your account).</li>
       <li><strong>Steps you ask us to take</strong> when you email us and expect a reply.</li>
     </ul>
 
     <h2>4. Who we share it with</h2>
     <p>We use these service providers (operators under POPIA) who process information on our behalf:</p>
     <ul>
-      <li><strong>Microsoft Azure</strong>, which hosts the website. Our hosting region is South Africa North.</li>
+      <li><strong>Microsoft Azure</strong>, which hosts the website and stores account information and sign-in records in a database. Our hosting and database region is South Africa North.</li>
+      <li><strong>Microsoft</strong> (Microsoft Entra ID and Microsoft accounts), which verifies who you are when you sign up or sign in. It tells us your name, email address and the identifiers listed above. Microsoft's own privacy statement applies to your dealings with Microsoft.</li>
       <li><strong>Google Analytics</strong> (Google LLC / Google Ireland Ltd), only if you accept analytics cookies.</li>
       <li><strong>jsDelivr</strong> (cdn.jsdelivr.net), a content delivery network. The documentation page loads a diagram library from it, so jsDelivr and its network providers will see your IP address when you open that page.</li>
     </ul>
@@ -80,8 +93,8 @@ import { Detail } from './detail';
 
     <h2>5. Transfers outside South Africa</h2>
     <p>
-      Google and jsDelivr may process information in other countries, including the United States and the European
-      Union. Where that happens, we rely on those providers' contractual and legal safeguards, as required by section 72
+      Google, jsDelivr and Microsoft (for sign-in) may process information in other countries, including the United
+      States and the European Union. Where that happens, we rely on those providers' contractual and legal safeguards, as required by section 72
       of POPIA.
     </p>
 
@@ -89,6 +102,7 @@ import { Detail } from './detail';
     <ul>
       <li>Server logs: kept only as long as needed for security and troubleshooting.</li>
       <li>Analytics data: kept in Google Analytics for no longer than 14 months.</li>
+      <li>Account information and sign-in records: kept while your account exists. If you ask us to delete your account we delete this information, except what we must keep to meet a legal duty or to protect against misuse.</li>
       <li>Emails: kept while we deal with your request and for as long afterwards as the law or a genuine business need requires.</li>
     </ul>
 
@@ -110,7 +124,7 @@ import { Detail } from './detail';
     </p>
 
     <h2>9. Children</h2>
-    <p>The website is meant for software developers and is not directed at children under 18. We do not knowingly collect information from children.</p>
+    <p>The website and accounts are meant for software developers and are not directed at children under 18. We do not knowingly collect information from children, and we will delete an account we learn belongs to one.</p>
 
     <h2>10. Cookies</h2>
     <p>Our <a routerLink="/cookies">Cookie Policy</a> lists the cookies used and how to control them.</p>
