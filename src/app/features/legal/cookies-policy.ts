@@ -10,8 +10,8 @@ import { LEGAL_LAST_UPDATED } from '../../core/config/legal-links';
     <p class="legal-meta">Last updated: {{ updated }}</p>
 
     <p>
-      Cookies are small text files a website stores in your browser. This page lists what the FootLook website uses.
-      Read it together with our <a routerLink="/privacy">Privacy Policy</a>.
+      Cookies are small text files a website stores in your browser. This page lists what the FootLook website and
+      dashboard use, including similar browser storage. Read it together with our <a routerLink="/privacy">Privacy Policy</a>.
     </p>
 
     <h2>1. Cookies we use</h2>
@@ -19,6 +19,26 @@ import { LEGAL_LAST_UPDATED } from '../../core/config/legal-links';
     <p>
       The website does not set any cookies that are strictly necessary for it to work. It does remember your cookie
       choice in your browser's local storage (an entry called <code>footlook-cookie-consent</code>), so we do not ask you again on every visit.
+    </p>
+
+    <h3>Signing in and the dashboard (strictly necessary)</h3>
+    <p>
+      Signing in does not use any cookies of ours, but it does keep a few entries in your browser so that you stay
+      signed in. They are needed to provide the account you asked for, so they are not behind the cookie banner.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Where</th><th>Purpose</th><th>Lasts</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Microsoft sign-in record (kept by Microsoft's sign-in library)</td><td>footlook.co.za, session storage</td><td>Completes your Microsoft sign-in.</td><td>Until you close the tab</td></tr>
+        <tr><td><code>footlook_token</code>, <code>footlook_token_expires</code>, <code>footlook_user</code></td><td>The FootLook dashboard, local storage</td><td>Keep you signed in to the dashboard: your session token, when it expires, and your name and email for display.</td><td>Until the session expires or you sign out</td></tr>
+        <tr><td><code>footlook_theme</code></td><td>The FootLook dashboard, local storage</td><td>Remembers your light or dark display choice.</td><td>Until you clear it</td></tr>
+      </tbody>
+    </table>
+    <p>
+      The Microsoft sign-in window is run by Microsoft at login.microsoftonline.com and may set its own cookies there.
+      Those are under Microsoft's control and covered by Microsoft's privacy statement. Our own servers do not set cookies.
     </p>
 
     <h3>Analytics (only if you accept)</h3>
