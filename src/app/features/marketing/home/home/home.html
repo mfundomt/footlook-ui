@@ -1,20 +1,21 @@
     <div class="landing">
   <header class="header">
-    <a class="logo" routerLink="/product">
-      <b><img src="assets/logo-transparent.png" alt="FootLook Logo" /></b> FootLook</a>
+    <a class="logo" routerLink="/" aria-label="FootLook home">
+      <b><img src="assets/logo-transparent.png" alt="" /></b> FootLook</a>
 
-    <nav>
+    <nav aria-label="Main">
       <a href="#features">Product</a>
       <a href="#features">Features</a>
       <a href="#how">How it works</a>
       <a href="#developers">Developers</a>
       <!--<a>Pricing</a>-->
-      <a href="/docs/doc.html" target="_blank" rel="noopener">Docs <i data-lucide="external-link" aria-hidden="true"></i></a>
+      <a href="/docs/doc.html" target="_blank" rel="noopener">Docs <i data-lucide="external-link" aria-hidden="true"></i><span class="sr-only"> (opens in a new tab)</span></a>
     </nav>
 
-    <a class="demo" href="https://www.footlook.co.za/footlook.html" target="_blank" rel="noopener">Get Started →</a>
+    <a class="demo" href="https://www.footlook.co.za/footlook.html" target="_blank" rel="noopener">Get Started <span aria-hidden="true">→</span><span class="sr-only"> (opens in a new tab)</span></a>
   </header>
 
+  <main id="main" tabindex="-1">
   <section class="hero wrap">
     <div class="hero-copy">
       <small class="eyebrow">Zero-interaction observability for .NET</small>
@@ -28,7 +29,7 @@
       </p>
 
       <div class="actions">
-        <a class="primary" href="https://www.footlook.co.za/footlook.html">Start Monitoring →</a>
+        <a class="primary" href="https://www.footlook.co.za/footlook.html">Start Monitoring <span aria-hidden="true">→</span></a>
         <!--<a class="outline" href="#demo">View Live Demo</a> -->
       </div>
 
@@ -48,7 +49,7 @@
       </div>
     </div>
 
-    <div class="product" id="demo">
+    <div class="product" id="demo" role="img" aria-label="Illustration of the FootLook overview screen: request counts, success rate, average duration, a list of recent requests and the details of one request.">
       <div class="bar">
         ◆ FootLook
         <small><i data-lucide="search" aria-hidden="true"></i><i data-lucide="bell" aria-hidden="true"></i><i data-lucide="settings" aria-hidden="true"></i> AD</small>
@@ -66,7 +67,7 @@
         </aside>
 
         <div class="screen">
-          <h3>Overview</h3>
+          <div class="screen-title">Overview</div>
           <div class="metrics">
             <span>Requests (24h)<b>1,284</b><em>▲ 12.4%</em></span>
             <span>Success Rate<b>98.7%</b><em>▲ 1.0%</em></span>
@@ -104,11 +105,11 @@
   <section class="platform" id="resources">
     <div class="wrap">
       <b>Built for modern .NET APIs</b>
-      <span><img src="assets/.netCore.svg" alt="ASP.NET Core" /> ASP.NET Core</span>
-      <span><img src="assets/.net.svg" alt=".NET" /> .NET 8+</span>
-      <span><img src="assets/csharp.svg" alt="C#" /> C#</span>
-      <span><img src="assets/restAPI.png" alt="REST APIs" /> REST APIs</span>
-      <span><img src="assets/micro.png" alt="Microservices" /> Microservices</span>
+      <span><img src="assets/.netCore.svg" alt="" /> ASP.NET Core</span>
+      <span><img src="assets/.net.svg" alt="" /> .NET 8+</span>
+      <span><img src="assets/csharp.svg" alt="" /> C#</span>
+      <span><img src="assets/restAPI.png" alt="" /> REST APIs</span>
+      <span><img src="assets/micro.png" alt="" /> Microservices</span>
     </div>
   </section>
 
@@ -153,7 +154,7 @@
       </ol>
     </div>
 
-    <div class="diagram">
+    <div class="diagram" tabindex="0" role="region" aria-label="Request pipeline diagram">
       <div class="diagram-flow">
         <div class="diagram-flow__pipeline">
           @for (box of boxes.slice(0, 5); track box.label) {
@@ -184,14 +185,14 @@
       <p class="sub">Everything you need to understand a request in one place.</p>
     </div>
 
-    <div class="dark-panel">
+    <div class="dark-panel" role="img" aria-label="Illustration of the FootLook capture inspector: a list of captured requests on the left and the request and response payloads of the selected capture on the right.">
       <aside class="capture-list">
-        <input placeholder="Search captures..." />
-        <button class="capture-row is-selected"><strong>POST /api/orders</strong><span>201 Created <time>10:21:41</time></span></button>
-        <button class="capture-row"><strong>GET /api/customers/4821</strong><span>200 OK <time>10:21:36</time></span></button>
-        <button class="capture-row"><strong>POST /api/orders</strong><span class="is-error">500 Error <time>10:21:32</time></span></button>
-        <button class="capture-row"><strong>PUT /api/orders/10482</strong><span>200 OK <time>10:21:28</time></span></button>
-        <button class="capture-row"><strong>DELETE /api/orders/10410</strong><span>204 No Content <time>10:21:24</time></span></button>
+        <div class="capture-search">Search captures...</div>
+        <div class="capture-row is-selected"><strong>POST /api/orders</strong><span>201 Created <time>10:21:41</time></span></div>
+        <div class="capture-row"><strong>GET /api/customers/4821</strong><span>200 OK <time>10:21:36</time></span></div>
+        <div class="capture-row"><strong>POST /api/orders</strong><span class="is-error">500 Error <time>10:21:32</time></span></div>
+        <div class="capture-row"><strong>PUT /api/orders/10482</strong><span>200 OK <time>10:21:28</time></span></div>
+        <div class="capture-row"><strong>DELETE /api/orders/10410</strong><span>204 No Content <time>10:21:24</time></span></div>
       </aside>
 
       <div class="capture-detail">
@@ -200,9 +201,9 @@
           <small>Correlation ID <code>8f7b4f1e-4c1b-4e11-9f95-3b2ef6b7c42</code></small>
           <small>Trace ID <code>00-7c91e0b037b2cfb0d8e1c6f0f09a1c2d-4a1f2b3c4d5e6f7a-01</code></small>
         </header>
-        <nav class="capture-tabs" aria-label="Capture detail tabs">
-          <button class="is-active">Request</button><button>Response</button><button>Headers</button><button>Metadata</button>
-        </nav>
+        <div class="capture-tabs">
+          <span class="is-active">Request</span><span>Response</span><span>Headers</span><span>Metadata</span>
+        </div>
         <div class="payload-grid">
           <section class="payload-pane"><header>Request <i data-lucide="copy" aria-hidden="true"></i></header><pre><span><i>1</i>&#123;</span><span><i>2</i>  <b>"customerId"</b>: <em>4821</em>,</span><span><i>3</i>  <b>"items"</b>: [</span><span><i>4</i>    &#123;</span><span><i>5</i>      <b>"sku"</b>: <strong>"SKU-123"</strong>,</span><span><i>6</i>      <b>"qty"</b>: <em>2</em>,</span><span><i>7</i>      <b>"price"</b>: <em>49.99</em></span><span><i>8</i>    &#125;</span><span><i>9</i>  ],</span><span><i>10</i>  <b>"shipping"</b>: <strong>"Standard"</strong></span><span><i>11</i>&#125;</span></pre></section>
           <section class="payload-pane"><header>Response <i data-lucide="copy" aria-hidden="true"></i></header><pre><span><i>1</i>&#123;</span><span><i>2</i>  <b>"orderId"</b>: <strong>"ORD-10482"</strong>,</span><span><i>3</i>  <b>"status"</b>: <strong>"Confirmed"</strong>,</span><span><i>4</i>  <b>"total"</b>: <em>49.99</em>,</span><span><i>5</i>  <b>"currency"</b>: <strong>"USD"</strong>,</span><span><i>6</i>  <b>"createdAt"</b>: <strong>"2025-05-14T10:21:41Z"</strong></span><span><i>7</i>&#125;</span></pre></section>
@@ -299,6 +300,7 @@
       <p>No rewrites. No complicated agents. Just observable APIs.</p>
     </div>
     </section>
+  </main>
 
   <footer>
     <div class="wrap footer-grid">
