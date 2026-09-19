@@ -1,0 +1,46 @@
+<div class="auth-shell">
+  <main id="main" tabindex="-1" class="auth-main">
+    <a class="auth-brand" routerLink="/" aria-label="FootLook home">
+      <img src="assets/logo-transparent.png" alt="" width="105" height="88" />
+      <span>FootLook</span>
+    </a>
+
+    <section class="auth-card" aria-labelledby="auth-title">
+      <h1 id="auth-title">Create your FootLook account</h1>
+      <p class="auth-lead">Sign up with your work or personal Microsoft account. There is no password to create.</p>
+
+      <ul class="auth-perks" aria-label="What you get">
+        <li>Capture sessions on your own ASP.NET Core API</li>
+        <li>No API keys to create or manage</li>
+        <li>Works with your work or personal email</li>
+      </ul>
+
+      @if (!configured) {
+        <p class="auth-notice" role="status">Sign-up isn't configured yet. Please check back soon.</p>
+      }
+
+      <label class="auth-terms" for="accept-terms">
+        <input id="accept-terms" type="checkbox" [checked]="accepted()" (change)="setAccepted($any($event.target).checked)" />
+        <span>I accept the <a routerLink="/terms">Terms of Use</a> and <a routerLink="/privacy">Privacy Policy</a></span>
+      </label>
+
+      <div class="auth-error" role="status" aria-live="polite" aria-atomic="true">
+        @if (failure(); as f) {
+          {{ f.message }}
+        }
+      </div>
+
+      <button type="button" class="ms-button" [attr.aria-disabled]="!configured || !accepted() || busy()" (click)="signUp()">
+        <app-microsoft-logo />
+        <span>{{ busy() ? 'Creating your account...' : 'Sign up with Microsoft' }}</span>
+      </button>
+
+      <p class="auth-alt">Already have an account? <a [routerLink]="loginRoute">Sign in</a></p>
+    </section>
+  </main>
+
+  <footer class="auth-footer">
+    <a routerLink="/privacy">Privacy Policy</a>
+    <a routerLink="/terms">Terms of Use</a>
+  </footer>
+</div>

@@ -29,6 +29,11 @@
                 "output": "assets"
               },
               {
+                "glob": "msal-redirect-bridge.min.js",
+                "input": "node_modules/@azure/msal-browser/lib/redirect-bridge",
+                "output": "auth"
+              },
+              {
                 "glob": "**/*",
                 "input": "src/app/features/marketing/features-page/doumentation",
                 "output": "docs"
