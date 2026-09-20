@@ -14,13 +14,13 @@ export interface BusinessDetails {
   legalName: string;
   /** required: e.g. "Private company (Pty) Ltd", "Sole proprietor", "Non-profit company" */
   legalStatus: string;
-  /** required for companies: CIPC registration number, e.g. 2024/123456/07 */
+  /** optional: CIPC registration number for a company, e.g. 2024/123456/07. Leave empty if not registered. */
   registrationNumber: string;
   /** optional: leave empty if not VAT-registered */
   vatNumber: string;
   /** required: physical address (also used for service of legal documents) */
   physicalAddress: string;
-  /** required: telephone number */
+  /** optional: telephone number. Leave empty to show none. */
   phone: string;
   /** required: general contact email, also used for privacy and refund requests */
   email: string;
@@ -34,24 +34,22 @@ export interface BusinessDetails {
 
 export const BUSINESS: BusinessDetails = {
   tradingName: 'FootLook',
-  legalName: '',
-  legalStatus: '',
+  legalName: 'Mfundo Mthembu',
+  legalStatus: 'Individual (sole proprietor)',
   registrationNumber: '',
   vatNumber: '',
-  physicalAddress: '',
+  physicalAddress: 'Cape Town, Western Cape, South Africa',
   phone: '',
-  email: '',
-  informationOfficerName: '',
-  informationOfficerEmail: '',
-  jurisdiction: '',
+  email: 'mfundo1.mthembu@gmail.com',
+  informationOfficerName: 'Mfundo Mthembu',
+  informationOfficerEmail: 'mfundo1.mthembu@gmail.com',
+  jurisdiction: 'Cape Town, Western Cape',
 };
 
 export const REQUIRED_BUSINESS_FIELDS: readonly (keyof BusinessDetails)[] = [
   'legalName',
   'legalStatus',
-  'registrationNumber',
   'physicalAddress',
-  'phone',
   'email',
   'informationOfficerName',
   'informationOfficerEmail',

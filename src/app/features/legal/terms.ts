@@ -24,16 +24,20 @@ import { Detail } from './detail';
       <dd><app-detail [value]="business.legalName" label="registered business name" /> (trading as {{ business.tradingName }})</dd>
       <dt>Legal status</dt>
       <dd><app-detail [value]="business.legalStatus" label="legal status, e.g. (Pty) Ltd" /></dd>
-      <dt>Registration number</dt>
-      <dd><app-detail [value]="business.registrationNumber" label="CIPC registration number" /></dd>
+      @if (business.registrationNumber) {
+        <dt>Registration number</dt>
+        <dd>{{ business.registrationNumber }}</dd>
+      }
       @if (business.vatNumber) {
         <dt>VAT number</dt>
         <dd>{{ business.vatNumber }}</dd>
       }
       <dt>Physical address</dt>
       <dd><app-detail [value]="business.physicalAddress" label="physical address" /></dd>
-      <dt>Telephone</dt>
-      <dd><app-detail [value]="business.phone" label="telephone number" /></dd>
+      @if (business.phone) {
+        <dt>Telephone</dt>
+        <dd>{{ business.phone }}</dd>
+      }
       <dt>Email</dt>
       <dd><app-detail [value]="business.email" label="contact email" /></dd>
       <dt>Website</dt>
