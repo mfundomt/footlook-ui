@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { DASHBOARD_URL } from './dashboard.config';
 
 /**
@@ -23,8 +24,8 @@ export const MSAL_SCOPES = ['openid', 'profile', 'email'];
  */
 export const MSAL_REDIRECT_PATH = '/auth/redirect.html';
 
-/** Base URL of the FootLook backend. */
-export const AUTH_API_URL = 'https://footlook-dashboard.azurewebsites.net/footlook';
+/** Base URL of the FootLook backend (from the environment files: hosted in production, local in development). */
+export const AUTH_API_URL: string = environment.authApiUrl;
 
 /** Where a signed-in developer is sent, with the session in the URL fragment. */
 export const DASHBOARD_URL_FOR_HANDOFF = DASHBOARD_URL;
