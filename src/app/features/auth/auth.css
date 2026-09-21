@@ -38,3 +38,4 @@ a:focus-visible, .ms-button:focus-visible, input:focus-visible { outline: 3px so
   .auth-card h1 { font-size: 24px; }
   .auth-brand img { height: 72px; }
 }
+.auth-info { background: #e6f0fc; border-left-color: #0b57c4; color: #0a3d85; }

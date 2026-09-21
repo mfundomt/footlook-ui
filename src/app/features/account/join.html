@@ -1,0 +1,31 @@
+<div class="page page-narrow">
+  <h1>Join a project</h1>
+  <p class="lead">Enter the invite code the project owner gave you. You'll become a member and can open that project's dashboard.</p>
+
+  <section class="card" aria-labelledby="join-title">
+    <h2 id="join-title" class="sr-only">Invite code</h2>
+    <form (submit)="join($event)" novalidate>
+      <div class="field">
+        <label for="invite-code">Invite code</label>
+        <input
+          id="invite-code"
+          name="code"
+          type="text"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="FL-XXXXXXXXXX"
+          [value]="code()"
+          (input)="code.set($any($event.target).value)"
+          [attr.aria-invalid]="fieldError() ? 'true' : null"
+          aria-describedby="invite-code-error"
+        />
+        <p id="invite-code-error" class="field-error" role="alert">{{ fieldError() }}</p>
+      </div>
+
+      <div class="alert alert-error" role="alert">{{ error() }}</div>
+
+      <button type="submit" class="btn" [attr.aria-disabled]="busy()">{{ busy() ? 'Joining...' : 'Join project' }}</button>
+    </form>
+  </section>
+</div>

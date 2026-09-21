@@ -1,14 +1,19 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { Register } from './register';
 
-function render(configured = true) {
+function render(configured = true, next: string | null = null, signedIn = false) {
   const signInWithMicrosoft = vi.fn(async () => null);
+  const goAfterSignIn = vi.fn(async () => undefined);
   TestBed.resetTestingModule();
   TestBed.configureTestingModule({
     imports: [Register],
-    providers: [provideRouter([]), { provide: AuthService, useValue: { configured, signInWithMicrosoft } }],
+    providers: [
+      provideRouter([]),
+      { provide: ActivatedRoute, useValue: { snapshot: { queryParamMap: convertToParamMap(next === null ? {} : { next }) } } },
+      { provide: AuthService, useValue: { configured, signInWithMicrosoft, ensureSession: () => signedIn, goAfterSignIn } },
+    ],
   });
   const fixture = TestBed.createComponent(Register);
   fixture.detectChanges();
@@ -17,6 +22,7 @@ function render(configured = true) {
     fixture,
     el,
     signInWithMicrosoft,
+    goAfterSignIn,
     button: el.querySelector('button.ms-button') as HTMLButtonElement,
     checkbox: el.querySelector('#accept-terms') as HTMLInputElement,
     message: () => el.querySelector('.auth-error')?.textContent?.trim() ?? '',
@@ -49,7 +55,7 @@ describe('Register', () => {
 
     button.click();
     await fixture.whenStable();
-    expect(signInWithMicrosoft).toHaveBeenCalledExactlyOnceWith('register', true);
+    expect(signInWithMicrosoft).toHaveBeenCalledExactlyOnceWith('register', true, null);
   });
 
   it('blocks the button again when the terms are unticked', () => {
@@ -70,5 +76,25 @@ describe('Register', () => {
     button.click();
     await fixture.whenStable();
     expect(signInWithMicrosoft).not.toHaveBeenCalled();
+  });
+
+  it('passes a valid ?next= on, and drops one that leaves the site', async () => {
+    for (const [next, expected] of [
+      ['/connect?project=prj_a', '/connect?project=prj_a'],
+      ['https://evil.example', null],
+      ['//evil.example', null],
+    ] as const) {
+      const { fixture, button, checkbox, signInWithMicrosoft } = render(true, next);
+      checkbox.click();
+      fixture.detectChanges();
+      button.click();
+      await fixture.whenStable();
+      expect(signInWithMicrosoft).toHaveBeenCalledExactlyOnceWith('register', true, expected);
+    }
+  });
+
+  it('carries straight on when already signed in', () => {
+    const { goAfterSignIn } = render(true, '/join', true);
+    expect(goAfterSignIn).toHaveBeenCalledExactlyOnceWith('/join');
   });
 });

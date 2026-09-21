@@ -9,6 +9,10 @@
       <h1 id="auth-title">Sign in to FootLook</h1>
       <p class="auth-lead">Use your work or personal Microsoft account.</p>
 
+      @if (fromConnect) {
+        <p class="auth-notice auth-info">Sign in to open your project's dashboard. You'll go straight back to it.</p>
+      }
+
       @if (!configured) {
         <p class="auth-notice" role="status">Sign-in isn't configured yet. Please check back soon.</p>
       }
@@ -17,7 +21,7 @@
         @if (failure(); as f) {
           {{ f.message }}
           @if (f.code === 'account_not_found') {
-            <a [routerLink]="registerRoute">Create a FootLook account</a>.
+            <a [routerLink]="registerRoute" queryParamsHandling="preserve">Create a FootLook account</a>.
           }
         }
       </div>
@@ -27,7 +31,7 @@
         <span>{{ busy() ? 'Signing you in...' : 'Sign in with Microsoft' }}</span>
       </button>
 
-      <p class="auth-alt">New to FootLook? <a [routerLink]="registerRoute">Create an account</a></p>
+      <p class="auth-alt">New to FootLook? <a [routerLink]="registerRoute" queryParamsHandling="preserve">Create an account</a></p>
     </section>
   </main>
 

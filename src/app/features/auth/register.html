@@ -35,7 +35,7 @@
         <span>{{ busy() ? 'Creating your account...' : 'Sign up with Microsoft' }}</span>
       </button>
 
-      <p class="auth-alt">Already have an account? <a [routerLink]="loginRoute">Sign in</a></p>
+      <p class="auth-alt">Already have an account? <a [routerLink]="loginRoute" queryParamsHandling="preserve">Sign in</a></p>
     </section>
   </main>
 

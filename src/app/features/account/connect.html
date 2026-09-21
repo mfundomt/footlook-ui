@@ -1,0 +1,52 @@
+<div class="page page-narrow">
+  <h1>Opening your project</h1>
+
+  <section class="card" aria-live="polite" aria-atomic="true">
+    @switch (state()) {
+      @case ('working') {
+        <p><span class="spinner" aria-hidden="true"></span> Checking your access...</p>
+      }
+      @case ('redirecting') {
+        <p><span class="spinner" aria-hidden="true"></span> Taking you to your project's dashboard...</p>
+      }
+      @case ('no_access') {
+        <div class="alert alert-error">
+          <strong>You don't have access to this project.</strong>
+          <p>If someone gave you an invite code, enter it on the Join page. Otherwise ask the project owner to invite you.</p>
+          <div class="alert-actions">
+            <a class="btn btn-small" routerLink="/join">Join with an invite code</a>
+            <a routerLink="/projects">Your projects</a>
+          </div>
+        </div>
+      }
+      @case ('bad_return') {
+        <div class="alert alert-error">
+          <strong>This project doesn't allow sign-in from that address.</strong>
+          <p>The link you followed points somewhere the project has not approved. Go back to your API and try again. If it keeps happening, ask the project owner to add the dashboard address to the project's return URLs.</p>
+          <div class="alert-actions"><a routerLink="/projects">Your projects</a></div>
+        </div>
+      }
+      @case ('incomplete') {
+        <div class="alert alert-error">
+          <strong>This link is incomplete.</strong>
+          <p>It needs a project and a return address. Go back to your API's dashboard and start again.</p>
+          <div class="alert-actions"><a routerLink="/projects">Your projects</a></div>
+        </div>
+      }
+      @case ('unreachable') {
+        <div class="alert alert-error">
+          <strong>We couldn't reach FootLook.</strong>
+          <p>Check your connection, then try again.</p>
+          <div class="alert-actions"><button type="button" class="btn btn-small" (click)="connect()">Try again</button></div>
+        </div>
+      }
+      @default {
+        <div class="alert alert-error">
+          <strong>Something went wrong.</strong>
+          <p>We couldn't open the project. Please try again in a moment.</p>
+          <div class="alert-actions"><button type="button" class="btn btn-small" (click)="connect()">Try again</button></div>
+        </div>
+      }
+    }
+  </section>
+</div>

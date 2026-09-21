@@ -1,0 +1,250 @@
+<div class="page">
+  <a class="back" routerLink="/projects">&larr; All projects</a>
+
+  @if (loading()) {
+    <div class="state" role="status"><span class="spinner" aria-hidden="true"></span> Loading the project...</div>
+  } @else if (notFound()) {
+    <div class="state">
+      <strong>Project not found</strong>
+      We couldn't find that project, or you're not a member of it.
+      <div class="alert-actions" style="justify-content: center">
+        <a class="btn btn-secondary btn-small" routerLink="/projects">Your projects</a>
+        <a class="btn btn-small" routerLink="/join">Join with an invite code</a>
+      </div>
+    </div>
+  } @else if (loadError(); as message) {
+    <div class="alert alert-error" role="alert">
+      {{ message }}
+      <div class="alert-actions"><button type="button" class="btn btn-secondary btn-small" (click)="load()">Try again</button></div>
+    </div>
+  } @else if (project(); as p) {
+    <div class="head-row">
+      <h1>{{ p.name }} <span class="badge" [class.badge-owner]="p.role === 'owner'">{{ p.role === 'owner' ? 'Owner' : 'Member' }}</span></h1>
+    </div>
+    <p class="lead">
+      @if (formatDay(p.createdAtUtc); as day) {
+        Created {{ day }}.
+      }
+      {{ isOwner() ? 'You own this project.' : 'You are a member of this project.' }}
+    </p>
+
+    <section class="card" aria-labelledby="id-title">
+      <h2 id="id-title">ProjectId</h2>
+      <p class="muted">The public name of this project. Your API uses it to know which FootLook project it belongs to.</p>
+      <div class="copy-row">
+        <code class="mono-box" id="project-id">{{ p.id }}</code>
+        <button type="button" class="btn btn-secondary btn-small" (click)="copy('id', p.id)" aria-describedby="project-id">
+          {{ copied() === 'id' ? 'Copied' : 'Copy ProjectId' }}
+        </button>
+        <span class="copy-status" role="status">{{ copied() === 'id' ? 'ProjectId copied to the clipboard.' : copyFailed() ? 'Copy failed. Select the text and copy it by hand.' : '' }}</span>
+      </div>
+
+      <h2 style="margin-top: 24px">Add it to your API</h2>
+      <p class="alert-info alert">
+        <strong>No secret is needed.</strong> The ProjectId is not a password and nothing else from FootLook goes into your API. People still have to sign in and be a member of this project to open its dashboard.
+      </p>
+
+      <div class="snippet-head">
+        <h3>In code</h3>
+        <button type="button" class="btn btn-secondary btn-small" (click)="copy('snippet', codeSnippet())">
+          {{ copied() === 'snippet' ? 'Copied' : 'Copy code' }}<span class="sr-only"> snippet</span>
+        </button>
+      </div>
+      <pre class="snippet" tabindex="0" aria-label="Code snippet"><code>{{ codeSnippet() }}</code></pre>
+
+      <div class="snippet-head">
+        <h3>Or in appsettings.json</h3>
+        <button type="button" class="btn btn-secondary btn-small" (click)="copy('config', configSnippet())">
+          {{ copied() === 'config' ? 'Copied' : 'Copy config' }}<span class="sr-only"> snippet</span>
+        </button>
+      </div>
+      <pre class="snippet" tabindex="0" aria-label="Configuration file snippet"><code>{{ configSnippet() }}</code></pre>
+      <span class="copy-status" role="status">{{ copied() === 'snippet' ? 'Code copied to the clipboard.' : copied() === 'config' ? 'Config copied to the clipboard.' : '' }}</span>
+    </section>
+
+    <section class="card" aria-labelledby="urls-title">
+      <h2 id="urls-title">Return URLs</h2>
+      @if (isOwner()) {
+        <form (submit)="saveProject($event)" novalidate>
+          <div class="field">
+            <label for="edit-name">Project name</label>
+            <input
+              id="edit-name"
+              type="text"
+              autocomplete="off"
+              [maxLength]="nameMax"
+              [value]="editName()"
+              (input)="editName.set($any($event.target).value)"
+              [attr.aria-invalid]="editNameError() ? 'true' : null"
+              aria-describedby="edit-name-error"
+            />
+            <p id="edit-name-error" class="field-error" role="alert">{{ editNameError() }}</p>
+          </div>
+          <div class="field">
+            <label for="edit-urls">Allowed return URLs (one per line)</label>
+            <textarea
+              id="edit-urls"
+              rows="4"
+              spellcheck="false"
+              autocapitalize="off"
+              autocomplete="off"
+              [value]="editUrls()"
+              (input)="editUrls.set($any($event.target).value)"
+              [attr.aria-invalid]="editUrlErrors().length ? 'true' : null"
+              aria-describedby="edit-urls-hint edit-urls-error"
+            ></textarea>
+            <p id="edit-urls-hint" class="hint">
+              The pages FootLook may send people to after they sign in, up to {{ returnUrlsMax }}. Use https:// addresses. Addresses on localhost always work for testing.
+            </p>
+            <div id="edit-urls-error" class="field-error" role="alert">
+              @for (message of editUrlErrors(); track message) {
+                <div>{{ message }}</div>
+              }
+            </div>
+          </div>
+          <div class="alert alert-error" role="alert">{{ editError() }}</div>
+          <div class="alert alert-ok" role="status">{{ editSaved() ? 'Saved.' : '' }}</div>
+          <button type="submit" class="btn" [attr.aria-disabled]="editSaving()">{{ editSaving() ? 'Saving...' : 'Save changes' }}</button>
+        </form>
+      } @else {
+        @if (p.allowedReturnUrls.length === 0) {
+          <p class="muted">No return URLs are set. Only addresses on localhost work until the owner adds some.</p>
+        } @else {
+          <ul class="rows">
+            @for (url of p.allowedReturnUrls; track url) {
+              <li><code class="row-main">{{ url }}</code></li>
+            }
+          </ul>
+        }
+      }
+    </section>
+
+    <section class="card" aria-labelledby="members-title">
+      <h2 id="members-title">Members ({{ members().length }})</h2>
+      <div class="alert alert-error" role="alert">{{ memberError() }}</div>
+      <ul class="rows">
+        @for (member of members(); track member.userId) {
+          <li>
+            <div class="row-main">
+              <div class="row-title">
+                {{ member.displayName || member.email }}
+                <span class="badge" [class.badge-owner]="member.role === 'owner'">{{ member.role === 'owner' ? 'Owner' : 'Member' }}</span>
+                @if (isMe(member)) {
+                  <span class="badge badge-quiet">You</span>
+                }
+              </div>
+              <div class="row-meta">
+                {{ member.email }}
+                @if (formatDay(member.addedAtUtc); as day) {
+                  &middot; added {{ day }}
+                }
+              </div>
+            </div>
+            @if (canRemove(member)) {
+              <button type="button" class="btn btn-secondary btn-small" [attr.aria-disabled]="membersBusy()" (click)="removeMember(member)">
+                {{ isMe(member) ? 'Leave project' : 'Remove' }}<span class="sr-only"> {{ member.displayName || member.email }}</span>
+              </button>
+            }
+          </li>
+        }
+      </ul>
+    </section>
+
+    @if (isOwner()) {
+      <section class="card" aria-labelledby="invites-title">
+        <h2 id="invites-title">Invite codes</h2>
+        <p class="muted">Give a tester a code. They sign in, enter it at <a routerLink="/join">the Join page</a> and become a member of this project.</p>
+
+        @if (newInvite(); as invite) {
+          <div class="reveal" role="group" aria-labelledby="reveal-title">
+            <h3 id="reveal-title">Your new invite code</h3>
+            <span class="code" id="new-invite-code">{{ invite.code }}</span>
+            <div class="copy-row">
+              <button type="button" class="btn btn-small" (click)="copy('code', invite.code)">{{ copied() === 'code' ? 'Copied' : 'Copy code' }}<span class="sr-only"> invite code</span></button>
+              <span class="copy-status" role="status">{{ copied() === 'code' ? 'Invite code copied to the clipboard.' : copyFailed() ? 'Copy failed. Select the code and copy it by hand.' : '' }}</span>
+            </div>
+            <p class="warning">Copy it now. This code is shown only once and cannot be viewed again.</p>
+            <p class="muted">
+              It can be used {{ invite.maxUses }} {{ invite.maxUses === 1 ? 'time' : 'times' }} and expires {{ formatWhen(invite.expiresAtUtc) }}.
+            </p>
+            <button type="button" class="btn btn-secondary btn-small" (click)="dismissInvite()">I've saved it, hide the code</button>
+          </div>
+        }
+
+        <form (submit)="createInvite($event)" novalidate>
+          <div class="field-row">
+            <div class="field">
+              <label for="invite-uses">How many people can use it</label>
+              <input
+                id="invite-uses"
+                type="number"
+                inputmode="numeric"
+                [min]="usesRange.min"
+                [max]="usesRange.max"
+                step="1"
+                [value]="inviteMaxUses()"
+                (input)="setMaxUses($any($event.target).value)"
+                [attr.aria-invalid]="inviteFormError() ? 'true' : null"
+                aria-describedby="invite-form-error"
+              />
+              <p class="hint">From {{ usesRange.min }} to {{ usesRange.max }}.</p>
+            </div>
+            <div class="field">
+              <label for="invite-expiry">Expires after</label>
+              <select id="invite-expiry" (change)="inviteExpiry.set(+$any($event.target).value)">
+                @for (choice of expiryChoices; track choice.hours) {
+                  <option [value]="choice.hours" [selected]="choice.hours === inviteExpiry()">{{ choice.label }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <p id="invite-form-error" class="field-error" role="alert">{{ inviteFormError() }}</p>
+          <div class="alert alert-error" role="alert">{{ inviteError() }}</div>
+          <button type="submit" class="btn" [attr.aria-disabled]="inviteBusy()">{{ inviteBusy() ? 'Creating...' : 'Create invite code' }}</button>
+        </form>
+
+        <h3 style="margin-top: 28px">Invites</h3>
+        @if (invites().length === 0) {
+          <div class="state">No invites yet.</div>
+        } @else {
+          <ul class="rows">
+            @for (invite of invites(); track invite.id) {
+              <li>
+                <div class="row-main">
+                  <div class="row-title">
+                    Invite {{ invite.id }}
+                    <span class="badge" [class.badge-quiet]="inviteState(invite) !== 'Active'">{{ inviteState(invite) }}</span>
+                  </div>
+                  <div class="row-meta">Used {{ invite.usedCount }} of {{ invite.maxUses }} &middot; expires {{ formatWhen(invite.expiresAtUtc) }}</div>
+                </div>
+                @if (inviteState(invite) === 'Active') {
+                  <button type="button" class="btn btn-secondary btn-small" (click)="revokeInvite(invite)">Revoke<span class="sr-only"> invite {{ invite.id }}</span></button>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+      <section class="card card-danger" aria-labelledby="delete-title">
+        <h2 id="delete-title">Delete project</h2>
+        <p class="muted">Deleting removes the project, its members, invite codes and return URLs. Your API will no longer be able to sign anyone in with this ProjectId. This cannot be undone.</p>
+        @if (!confirmingDelete()) {
+          <button type="button" class="btn btn-danger" (click)="startDelete()">Delete this project...</button>
+        } @else {
+          <form (submit)="deleteProject($event)" novalidate>
+            <div class="field">
+              <label for="delete-confirm">Type the project name ({{ p.name }}) to confirm</label>
+              <input id="delete-confirm" type="text" autocomplete="off" [value]="deleteConfirmation()" (input)="deleteConfirmation.set($any($event.target).value)" />
+            </div>
+            <div class="alert alert-error" role="alert">{{ deleteError() }}</div>
+            <div class="alert-actions">
+              <button type="submit" class="btn btn-danger" [attr.aria-disabled]="!deleteReady() || deleting()">{{ deleting() ? 'Deleting...' : 'Permanently delete project' }}</button>
+              <button type="button" class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>
+            </div>
+          </form>
+        }
+      </section>
+    }
+  }
+</div>

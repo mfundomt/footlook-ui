@@ -1,5 +1,4 @@
 import { environment } from '../../../environments/environment';
-import { DASHBOARD_URL } from './dashboard.config';
 
 /**
  * Microsoft sign-in (Entra ID) settings for the login and register screens.
@@ -24,11 +23,15 @@ export const MSAL_SCOPES = ['openid', 'profile', 'email'];
  */
 export const MSAL_REDIRECT_PATH = '/auth/redirect.html';
 
-/** Base URL of the FootLook backend (from the environment files: hosted in production, local in development). */
-export const AUTH_API_URL: string = environment.authApiUrl;
-
-/** Where a signed-in developer is sent, with the session in the URL fragment. */
-export const DASHBOARD_URL_FOR_HANDOFF = DASHBOARD_URL;
+/**
+ * Base URL of the FootLook central service (accounts, projects, invite codes), from the environment files:
+ * the hosted service in production, FootLook.Central on this PC in development. No trailing slash.
+ * The session token is sent only to this origin.
+ */
+export const CENTRAL_API_URL: string = environment.centralApiUrl.replace(/\/+$/, '');
 
 export const LOGIN_ROUTE = '/login';
 export const REGISTER_ROUTE = '/register';
+export const PROJECTS_ROUTE = '/projects';
+export const JOIN_ROUTE = '/join';
+export const CONNECT_ROUTE = '/connect';
