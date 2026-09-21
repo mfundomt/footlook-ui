@@ -1,0 +1,21 @@
+:host { background: var(--panel); display: block; min-height: 100dvh; }
+.shell { color: var(--ink); font-family: var(--display); }
+.bar { align-items: center; background: var(--paper); border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 24px; padding: 8px 16px; }
+.brand { align-items: center; color: #102a52; display: inline-flex; font-size: 18px; font-weight: 700; gap: 8px; text-decoration: none; }
+.brand img { display: block; height: 36px; width: auto; }
+nav { display: flex; flex: 1; gap: 4px; }
+nav a { border-radius: 6px; color: var(--ink); font-size: 16px; font-weight: 600; padding: 10px 12px; text-decoration: none; }
+nav a:hover { background: var(--panel); }
+nav a.active { background: #e6f0fc; color: #0a3d85; }
+.who { align-items: center; display: flex; gap: 12px; margin-left: auto; min-width: 0; }
+.name { color: #4a5b74; font-size: 15px; max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.signout { background: var(--paper); border: 1px solid #5b6b85; border-radius: 6px; color: var(--ink); cursor: pointer; font-size: 15px; font-weight: 600; min-height: 40px; padding: 6px 14px; }
+.signout:hover { background: var(--panel); border-color: var(--ink); }
+a:focus-visible, .signout:focus-visible { outline: 3px solid #0b57c4; outline-offset: 3px; }
+main { display: block; }
+
+@media (max-width: 560px) {
+  .bar { gap: 4px 12px; }
+  nav { order: 3; width: 100%; flex-basis: 100%; }
+  .name { max-width: 130px; }
+}

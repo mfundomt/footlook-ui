@@ -1,0 +1,95 @@
+<div class="page">
+  <h1>Your projects</h1>
+  <p class="lead">A project is one API that uses FootLook. Register it here, add its ProjectId to your API, then invite the people who should be able to open its dashboard.</p>
+
+  <section class="card" aria-labelledby="list-title" [attr.aria-busy]="loading()">
+    <h2 id="list-title">Projects</h2>
+
+    @if (loading()) {
+      <div class="state" role="status"><span class="spinner" aria-hidden="true"></span> Loading your projects...</div>
+    } @else if (loadError(); as message) {
+      <div class="alert alert-error" role="alert">
+        {{ message }}
+        <div class="alert-actions"><button type="button" class="btn btn-secondary btn-small" (click)="load()">Try again</button></div>
+      </div>
+    } @else if (projects().length === 0) {
+      <div class="state">
+        <strong>No projects yet</strong>
+        Create your first project below, or <a routerLink="/join">join one with an invite code</a>.
+      </div>
+    } @else {
+      <ul class="rows">
+        @for (project of projects(); track project.id) {
+          <li>
+            <div class="row-main">
+              <div class="row-title">
+                <a [routerLink]="['/projects', project.id]">{{ project.name }}</a>
+                <span class="badge" [class.badge-owner]="project.role === 'owner'">{{ project.role === 'owner' ? 'Owner' : 'Member' }}</span>
+              </div>
+              <div class="row-meta">
+                {{ project.memberCount }} {{ project.memberCount === 1 ? 'member' : 'members' }}
+                @if (formatDay(project.createdAtUtc); as day) {
+                  &middot; created {{ day }}
+                }
+              </div>
+            </div>
+            <a class="btn btn-secondary btn-small" [routerLink]="['/projects', project.id]">
+              Open<span class="sr-only"> {{ project.name }}</span>
+            </a>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+
+  <section class="card" aria-labelledby="create-title">
+    <h2 id="create-title">Create a project</h2>
+    <form (submit)="create($event)" novalidate>
+      <div class="field">
+        <label for="project-name">Project name</label>
+        <input
+          id="project-name"
+          name="name"
+          type="text"
+          autocomplete="off"
+          [maxLength]="nameMax"
+          [value]="name()"
+          (input)="name.set($any($event.target).value)"
+          [attr.aria-invalid]="nameError() ? 'true' : null"
+          aria-describedby="project-name-error"
+        />
+        <p id="project-name-error" class="field-error" role="alert">{{ nameError() }}</p>
+      </div>
+
+      <div class="field">
+        <label for="return-urls">Allowed return URLs (one per line, optional)</label>
+        <textarea
+          id="return-urls"
+          name="returnUrls"
+          rows="4"
+          spellcheck="false"
+          autocapitalize="off"
+          autocomplete="off"
+          placeholder="https://api.example.com/footlook.html"
+          [value]="returnUrls()"
+          (input)="returnUrls.set($any($event.target).value)"
+          [attr.aria-invalid]="urlErrors().length ? 'true' : null"
+          aria-describedby="return-urls-hint return-urls-error"
+        ></textarea>
+        <p id="return-urls-hint" class="hint">
+          Where FootLook may send people after they sign in: the dashboard page of your API, up to {{ returnUrlsMax }} addresses.
+          Use https:// addresses. Addresses on localhost always work for testing, so you do not need to list them.
+        </p>
+        <div id="return-urls-error" class="field-error" role="alert">
+          @for (message of urlErrors(); track message) {
+            <div>{{ message }}</div>
+          }
+        </div>
+      </div>
+
+      <div class="alert alert-error" role="alert">{{ createError() }}</div>
+
+      <button type="submit" class="btn" [attr.aria-disabled]="saving()">{{ saving() ? 'Creating...' : 'Create project' }}</button>
+    </form>
+  </section>
+</div>
