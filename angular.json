@@ -24,6 +24,11 @@
                 "input": "public"
               },
               {
+                "glob": "server.js",
+                "input": "server",
+                "output": "/"
+              },
+              {
                 "glob": "**/*",
                 "input": "src/assets",
                 "output": "assets"
